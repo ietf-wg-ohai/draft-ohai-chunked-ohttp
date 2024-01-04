@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 22 March 2024                                           Mozilla
-                                                       19 September 2023
+Expires: 7 July 2024                                             Mozilla
+                                                          4 January 2024
 
 
                     Chunked Oblivious HTTP Messages
@@ -48,11 +48,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 March 2024.
+   This Internet-Draft will expire on 7 July 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -387,9 +387,9 @@ Table of Contents
 
 8.2.  message/ohttp-chunked-res Media Type
 
-   The "message/ohttp-res" identifies an encrypted binary HTTP response
-   that is transmitted or processed in chunks.  This is a binary format
-   that is defined in Section 5.
+   The "message/ohttp-chunked-res" identifies an encrypted binary HTTP
+   response that is transmitted or processed in chunks.  This is a
+   binary format that is defined in Section 5.
 
    Type name:  message
    Subtype name:  ohttp-chunked-res
