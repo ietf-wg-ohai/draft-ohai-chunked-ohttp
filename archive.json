@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-18T00:08:23.816041+00:00",
+  "timestamp": "2024-01-21T00:09:12.049865+00:00",
   "repo": "tfpauly/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -264,6 +264,38 @@
       "body": "We should probably have some!",
       "createdAt": "2023-09-18T20:38:34Z",
       "updatedAt": "2023-09-18T20:38:34Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 16,
+      "id": "I_kwDOJtaXUM58aSQd",
+      "title": "Pseudocode for decoding",
+      "url": "https://github.com/tfpauly/draft-ohai-chunked-ohttp/issues/16",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Decoding is a tiny bit more fiddly than encoding.  It might be worth adding an appendix with the appropriate logic.\r\n\r\n(I still need to implement it myself, FWIW.)",
+      "createdAt": "2024-01-18T00:50:59Z",
+      "updatedAt": "2024-01-18T00:50:59Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 18,
+      "id": "I_kwDOJtaXUM58gdP2",
+      "title": "Describe large upload use case",
+      "url": "https://github.com/tfpauly/draft-ohai-chunked-ohttp/issues/18",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Currently, OHTTP has no maximum size, so a server that is willing to accept large requests is forced to buffer unbounded messages before knowing if they can be decrypted, or if they will be served. Chunking allows the server to validate the HPKE encryption and request headers in the first chunk before accepting the rest of the request. Chunking also allows endpoints to write data out after decrypting, instead of holding the entire message in memory.",
+      "createdAt": "2024-01-18T18:59:51Z",
+      "updatedAt": "2024-01-18T18:59:51Z",
       "closedAt": null,
       "comments": []
     }
@@ -617,6 +649,95 @@
           "createdAt": "2023-09-19T02:17:58Z",
           "updatedAt": "2023-09-19T02:17:58Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOJtaXUM5kXtHj",
+      "title": "Some rewording suggestions for chunking",
+      "url": "https://github.com/tfpauly/draft-ohai-chunked-ohttp/pull/15",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Not a big deal, but I though we could put more of the logic in prose than we were.",
+      "createdAt": "2024-01-18T00:50:06Z",
+      "updatedAt": "2024-01-18T18:54:34Z",
+      "baseRepository": "tfpauly/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "118cd544ff1c821ff3949e6feb7aeb6bdf6d02cd",
+      "headRepository": "tfpauly/draft-ohai-chunked-ohttp",
+      "headRefName": "init-0",
+      "headRefOid": "d73426d430203cfbc2eaf87cfc54358c2fa23a6e",
+      "closedAt": "2024-01-18T18:54:34Z",
+      "mergedAt": "2024-01-18T18:54:34Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "25e6979d34b6560b8c1277ed9bea2e0db91050b9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM5tGS_S",
+          "commit": {
+            "abbreviatedOid": "d73426d"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-01-18T18:54:29Z",
+          "updatedAt": "2024-01-18T18:54:29Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDOJtaXUM5kXw1G",
+      "title": "Add some security considerations about interactivity risk",
+      "url": "https://github.com/tfpauly/draft-ohai-chunked-ohttp/pull/17",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is one of the key points that we'll need to resolve before people are comfortable taking this work on.  Hopefully this text helps.",
+      "createdAt": "2024-01-18T01:08:15Z",
+      "updatedAt": "2024-01-18T22:34:52Z",
+      "baseRepository": "tfpauly/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "118cd544ff1c821ff3949e6feb7aeb6bdf6d02cd",
+      "headRepository": "tfpauly/draft-ohai-chunked-ohttp",
+      "headRefName": "rtt-measurement",
+      "headRefOid": "8cb6aae562a6c2396dcf43e2ffc5b2a4a75c16b6",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM5tGUpC",
+          "commit": {
+            "abbreviatedOid": "1d096c5"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T18:58:53Z",
+          "updatedAt": "2024-01-18T18:58:57Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "I think it might be useful to point out that clients can choose to not be interactive.\r\n\r\n```suggestion\r\nIn order to prevent the Oblivious Gateway Resource from observing the round trip time\r\nto the client, client implementations can choose to not base the sending of request chunks based\r\non received response chunks. These interactions can still benefit from chunked processing,\r\nwithout incurring additional observability risks.\r\n```",
+              "createdAt": "2024-01-18T18:58:53Z",
+              "updatedAt": "2024-01-18T18:58:57Z"
+            }
+          ]
         }
       ]
     }
