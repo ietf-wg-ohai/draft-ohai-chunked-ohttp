@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-21T00:09:12.049865+00:00",
+  "timestamp": "2024-01-23T00:08:30.518748+00:00",
   "repo": "tfpauly/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -699,24 +699,26 @@
       "id": "PR_kwDOJtaXUM5kXw1G",
       "title": "Add some security considerations about interactivity risk",
       "url": "https://github.com/tfpauly/draft-ohai-chunked-ohttp/pull/17",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This is one of the key points that we'll need to resolve before people are comfortable taking this work on.  Hopefully this text helps.",
       "createdAt": "2024-01-18T01:08:15Z",
-      "updatedAt": "2024-01-18T22:34:52Z",
+      "updatedAt": "2024-01-21T14:58:26Z",
       "baseRepository": "tfpauly/draft-ohai-chunked-ohttp",
       "baseRefName": "main",
       "baseRefOid": "118cd544ff1c821ff3949e6feb7aeb6bdf6d02cd",
       "headRepository": "tfpauly/draft-ohai-chunked-ohttp",
       "headRefName": "rtt-measurement",
       "headRefOid": "8cb6aae562a6c2396dcf43e2ffc5b2a4a75c16b6",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-01-21T14:58:26Z",
+      "mergedAt": "2024-01-21T14:58:26Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "5bcbb8b5592078115e1f7bc836dd9da34ac9f578"
+      },
       "comments": [],
       "reviews": [
         {
@@ -738,6 +740,19 @@
               "updatedAt": "2024-01-18T18:58:57Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM5tZWHB",
+          "commit": {
+            "abbreviatedOid": "8cb6aae"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-01-21T14:58:20Z",
+          "updatedAt": "2024-01-21T14:58:20Z",
+          "comments": []
         }
       ]
     }
