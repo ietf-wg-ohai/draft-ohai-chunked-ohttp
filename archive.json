@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-10T00:45:10.335156+00:00",
+  "timestamp": "2024-03-12T00:41:30.638400+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -47,6 +47,16 @@
       "name": "wontfix",
       "description": "This will not be worked on",
       "color": "ffffff"
+    },
+    {
+      "name": "discuss",
+      "description": "",
+      "color": "d93f0b"
+    },
+    {
+      "name": "ready for text",
+      "description": "",
+      "color": "BFDF0F"
     }
   ],
   "issues": [
@@ -150,10 +160,12 @@
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discuss"
+      ],
       "body": "We need a section on how a client or gateway might indicate that they are able to use this.\r\n\r\nUse of something like this falls under the general configuration of a gateway, so that consistency requirements apply.  If clients have an inconsistent view of support for chunking, then they will be more identifiable as a result.  We need language about that too.",
       "createdAt": "2023-08-11T02:32:49Z",
-      "updatedAt": "2023-08-11T02:32:49Z",
+      "updatedAt": "2024-03-11T19:38:32Z",
       "closedAt": null,
       "comments": []
     },
@@ -166,10 +178,12 @@
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "discuss"
+      ],
       "body": "Varints for lengths have this problem where they can be very large, requiring a lot of memory. Even TLS has this problem and it only has 16k chunks. It would be good to have some way to negotiate chunk size. This ends up being a little weird though.\r\n\r\nIf you have too many size options, that leaks client details in a way that might be identifying.\r\n\r\nIf you negotiate on the outside of the encapsulation, the relay has to know to forward it. If you negotiate on the inside, it might end up going to the target and not the gateway.\r\n\r\nThat is, this is much like #5: we will need to be careful.",
       "createdAt": "2023-08-14T15:20:37Z",
-      "updatedAt": "2023-08-14T15:41:16Z",
+      "updatedAt": "2024-03-11T19:38:32Z",
       "closedAt": null,
       "comments": [
         {
@@ -190,10 +204,12 @@
       "author": "chris-wood",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "ready for text"
+      ],
       "body": "This is trivial, but the draft should note that there's a maximum number of chunks permissible before things break. For responses in particular, 2^Nn chunks will yield (key, nonce) reuse, which should be avoided.",
       "createdAt": "2023-09-18T20:29:27Z",
-      "updatedAt": "2023-09-18T20:29:27Z",
+      "updatedAt": "2024-03-11T19:38:56Z",
       "closedAt": null,
       "comments": []
     },
@@ -260,10 +276,12 @@
       "author": "chris-wood",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "ready for text"
+      ],
       "body": "We should probably have some!",
       "createdAt": "2023-09-18T20:38:34Z",
-      "updatedAt": "2023-09-18T20:38:34Z",
+      "updatedAt": "2024-03-11T19:40:20Z",
       "closedAt": null,
       "comments": []
     },
@@ -276,10 +294,12 @@
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "ready for text"
+      ],
       "body": "Decoding is a tiny bit more fiddly than encoding.  It might be worth adding an appendix with the appropriate logic.\r\n\r\n(I still need to implement it myself, FWIW.)",
       "createdAt": "2024-01-18T00:50:59Z",
-      "updatedAt": "2024-01-18T00:50:59Z",
+      "updatedAt": "2024-03-11T19:38:56Z",
       "closedAt": null,
       "comments": []
     },
