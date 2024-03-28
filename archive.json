@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-26T00:42:21.586066+00:00",
+  "timestamp": "2024-03-28T00:42:44.067894+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -316,6 +316,22 @@
       "body": "Currently, OHTTP has no maximum size, so a server that is willing to accept large requests is forced to buffer unbounded messages before knowing if they can be decrypted, or if they will be served. Chunking allows the server to validate the HPKE encryption and request headers in the first chunk before accepting the rest of the request. Chunking also allows endpoints to write data out after decrypting, instead of holding the entire message in memory.",
       "createdAt": "2024-01-18T18:59:51Z",
       "updatedAt": "2024-01-18T18:59:51Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 19,
+      "id": "I_kwDOJtaXUM6D2fWp",
+      "title": "incremental forwarding of HTTP messages is not a guaranteed property of HTTP semantics",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/19",
+      "state": "OPEN",
+      "author": "kazuho",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Chunked Oblivious HTTP Messages relies on incremental delivery of HTTP request; as the client sends some chunks of an HTTP POST request, the server is expected to respond to them by sending chunks of an HTTP response.\r\n\r\nThis approach contradicts to what HTTP semantics states and has interoperability issues with proxies that buffer the entire request before starting to forward the request to the backend servers.\r\n\r\nSpecifically, [RFC 9110 section 7.6](https://datatracker.ietf.org/doc/html/rfc9110#name-message-forwarding) states:\r\n> An HTTP message can be parsed as a stream for incremental processing or forwarding downstream. However, senders and recipients cannot rely on incremental delivery of partial messages, since some implementations will buffer or delay message forwarding for the sake of network efficiency, security checks, or content transformations.\r\n\r\nWhen these buffering intermediaries are involved, Chunked Oblivious HTTP Messages will not work, and clients would see timeouts.\r\n\r\nConsidering that what we are developing is an application of HTTP, it would make sense to design the new protocol in a way that it does not add restrictions to HTTP semantics.\r\n\r\nOne way of moving forward would be to use extended CONNECT instead of HTTP POST for opening the bi-directional stream on which we exchange Chunked OHTTP Messages.",
+      "createdAt": "2024-03-28T00:15:51Z",
+      "updatedAt": "2024-03-28T00:17:05Z",
       "closedAt": null,
       "comments": []
     }
