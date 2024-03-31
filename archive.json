@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-28T00:42:44.067894+00:00",
+  "timestamp": "2024-03-31T00:47:27.957152+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -331,9 +331,87 @@
       "labels": [],
       "body": "Chunked Oblivious HTTP Messages relies on incremental delivery of HTTP request; as the client sends some chunks of an HTTP POST request, the server is expected to respond to them by sending chunks of an HTTP response.\r\n\r\nThis approach contradicts to what HTTP semantics states and has interoperability issues with proxies that buffer the entire request before starting to forward the request to the backend servers.\r\n\r\nSpecifically, [RFC 9110 section 7.6](https://datatracker.ietf.org/doc/html/rfc9110#name-message-forwarding) states:\r\n> An HTTP message can be parsed as a stream for incremental processing or forwarding downstream. However, senders and recipients cannot rely on incremental delivery of partial messages, since some implementations will buffer or delay message forwarding for the sake of network efficiency, security checks, or content transformations.\r\n\r\nWhen these buffering intermediaries are involved, Chunked Oblivious HTTP Messages will not work, and clients would see timeouts.\r\n\r\nConsidering that what we are developing is an application of HTTP, it would make sense to design the new protocol in a way that it does not add restrictions to HTTP semantics.\r\n\r\nOne way of moving forward would be to use extended CONNECT instead of HTTP POST for opening the bi-directional stream on which we exchange Chunked OHTTP Messages.",
       "createdAt": "2024-03-28T00:15:51Z",
-      "updatedAt": "2024-03-28T00:17:05Z",
+      "updatedAt": "2024-03-30T00:43:37Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Another option is to acknowledge that intermediaries with these properties that are involved in a particular deployment can be identified and fixed.  I understand that Tommy discovered a few like this after implementing and deploying this.\r\n\r\nThe other thing is that this doesn't necessarily invalidate the design.  The goal is to enable incremental processing, which can be achieved with buffering.  What is not possible is things like 100-continue (which remains a misfeature for the reasons you describe, at least in my mind).",
+          "createdAt": "2024-03-28T04:58:23Z",
+          "updatedAt": "2024-03-28T04:58:23Z"
+        },
+        {
+          "author": "kazuho",
+          "authorAssociation": "NONE",
+          "body": "@martinthomson \r\n> Another option is to acknowledge that intermediaries with these properties that are involved in a particular deployment can be identified and fixed. I understand that Tommy discovered a few like this after implementing and deploying this.\r\n\r\nI'm not sure if such an approach would be possible or beneficial for the ecosystem.\r\n\r\nHTTP/2 and HTTP/3 allows clients a issue large number of requests at once (e.g., 100). But servers often do not process all requests in parallel. It is often the case that the number of requests that are processed concurrently is rather small (e.g., 10), while other requests are \"buffered.\" By doing so, the backend applications are protected from DoS attacks, while the bandwidth of the connection is fully utilized.\r\n\r\nTo paraphrase, the ability to buffer requests is a key pillar of HTTP/2 and 3. It is not a misfeature.\r\n\r\nCONNECT and extended CONNECT are exceptions. That is fine, because every intermediary would recognize that they are exceptions. When receiving too many requests at once, they have the option to respond with 429 Too Many Requests.\r\n\r\nBut POST does not work like that. Proxies are designed to be transparent to the content-type being used.\r\n\r\nThe problem with current design is that it requires proxies to have a list of mime types that have to be processed like CONNECT. I do not see a reason to choose such an approach when we can choose to use extended CONNECT that provides the necessary semantics.",
+          "createdAt": "2024-03-28T08:57:45Z",
+          "updatedAt": "2024-03-28T09:01:04Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm saying 100-continue is the misfeature, not the buffering.\r\n\r\nAn arrangement like you describe is beneficial, but it might not be always the right answer, depending on the backend capabilities and the application.  OHTTP relays do provide some DoS mitigation, but maybe limiting request volume is not the axis along which the relay needs to operate its protections.\r\n\r\nI'm not suggesting that this is a per-content-type thing, but a per-resource or really per-service thing.  If anything at all.  The design works well enough with buffering at an intermediary (modulo 100-continue and other similar arrangements).  I'd go futher and say that there are privacy benefits to buffering.",
+          "createdAt": "2024-03-29T01:24:37Z",
+          "updatedAt": "2024-03-29T01:24:37Z"
+        },
+        {
+          "author": "kazuho",
+          "authorAssociation": "NONE",
+          "body": "> I'm not suggesting that this is a per-content-type thing, but a per-resource or really per-service thing. If anything at all. The design works well enough with buffering at an intermediary (modulo 100-continue and other similar arrangements).\r\n\r\nFirstly, the design does not work well with buffering, at least with intermediaries that buffer the whole request or a non-negligible amount of bytes before starting to forward request to the backend. As stated, such behavior is common among the intermediaries.\r\n\r\nSecondly, this is the first time I've heard HTTP clients complaining about the buffering behavior. That makes me believe that Chunked OHTTP is asking for an exception, rather than turning on a per-resource or per-service config.",
+          "createdAt": "2024-03-29T01:33:17Z",
+          "updatedAt": "2024-03-29T01:33:42Z"
+        },
+        {
+          "author": "kazuho",
+          "authorAssociation": "NONE",
+          "body": "If I may ask, what is the benefit of choosing HTTP POST over extended CONNECT or websockets, when use of HTTP POST adds restrictions to HTTP semantics and has actual interoperability issues? In https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/19#issuecomment-2024396101 you state you've already seen them.",
+          "createdAt": "2024-03-29T01:43:09Z",
+          "updatedAt": "2024-03-29T01:43:09Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In talking with others (at your employer, even), POST is considerably less complex to deploy than CONNECT.  At the point you engage CONNECT, then MASQUE starts looking a whole lot better.  It's much more expensive and the ends, but still.\r\n\r\n> Secondly, this is the first time I've heard HTTP clients complaining about the buffering behavior. \r\n\r\nThat's not coming from me.  Buffering at intermediaries is mostly not a problem from my perspective.",
+          "createdAt": "2024-03-29T01:56:22Z",
+          "updatedAt": "2024-03-29T01:56:22Z"
+        },
+        {
+          "author": "kazuho",
+          "authorAssociation": "NONE",
+          "body": "@martinthomson \r\n> In talking with others (at your employer, even), POST is considerably less complex to deploy than CONNECT. At the point you engage CONNECT, then MASQUE starts looking a whole lot better. It's much more expensive and the ends, but still.\r\n\r\nThat sounds like we made the wrong choice with masque (and other extensions being developed on top of extended CONNECT; e.g., connect-tcp). That is because we could equally argue that masque could have been developed on top of HTTP POST, with a per-resource or per-service config in the intermediaries to not buffer the bytes for too long?\r\n\r\nAre you actually suggesting that, or is there a reason to believe the situation is different with Chunked OHTTP?\r\n\r\nPS. Re my employer, I think our stance is that POST is easier in the short term, but the long term consequences could be different (though the answer might depend on who you asked as well as when).",
+          "createdAt": "2024-03-29T01:59:54Z",
+          "updatedAt": "2024-03-29T02:09:11Z"
+        },
+        {
+          "author": "kazuho",
+          "authorAssociation": "NONE",
+          "body": "FWIW, [RFC 9205 section 3.1](https://www.rfc-editor.org/rfc/rfc9205.html#name-generic-semantics) states:\r\n> This split between generic and application-specific semantics allows an HTTP message to be handled by common software (e.g., HTTP servers, intermediaries, client implementations, and caches) without requiring those implementations to understand the application in use. It also allows people to leverage their knowledge of HTTP semantics without needing specialised knowledge of a particular application.\r\n> \r\n> Therefore, applications that use HTTP MUST NOT redefine, **refine**, or overlay the semantics of generic protocol elements such as methods, status codes, or existing header fields. Instead, they should focus their specifications on protocol elements that are specific to that application -- namely, their HTTP resources.\r\n\r\nI wonder if the current state of Chunked OHTTP requiring intermediaries to start forwarding chunks of requests before receiving entire request violates this MUST (cc @mnot).",
+          "createdAt": "2024-03-29T02:22:15Z",
+          "updatedAt": "2024-03-29T02:22:15Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "My initial inclination is to interpret this how @martinthomson does \u2014 essentially, that while POST clients \"cannot rely on incremental delivery\" in general, specific services can indeed provide incremental delivery where it is beneficial and desirable. An OHTTP relay that wants to support chunked OHTTP thus has an incentive to allow incremental delivery. It isn't violating HTTP semantics by buffering, but it isn't being very helpful to its clients. Since OHTTP relays are generally set up for specific services and relationships, this seems like a tractable problem.\r\n\r\nFrom my reading, the text about incremental delivery isn't normative; deployments can choose to do incremental delivery or not, depending on their situation.\r\n\r\nI don't think I'd say that chunked OHTTP as a protocol is _requiring_ that intermediaries do incremental forwarding; instead, its the clients of relays that will complain when they aren't getting their desired behavior.",
+          "createdAt": "2024-03-29T15:45:48Z",
+          "updatedAt": "2024-03-29T15:45:48Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "NONE",
+          "body": "Note that buffering is mostly done by intermediaries doing things like virus scanning, often on-box. ",
+          "createdAt": "2024-03-29T21:45:16Z",
+          "updatedAt": "2024-03-29T21:45:16Z"
+        },
+        {
+          "author": "kazuho",
+          "authorAssociation": "NONE",
+          "body": "@mnot \r\n> Note that buffering is mostly done by intermediaries doing things like virus scanning, often on-box.\r\n\r\nOr intermediaries that try to reduce concurrency to nearby back-end servers, which I think is fairly common.\r\n\r\nLooking back the history, one of the reasons people have deployed Nginx in front of preforking application servers (incl. Apache HTTP server + mod_php) is to use Nginx as a buffer for reducing concurrency. Preforking servers cannot handle as many connections as a event-driven server does. Therefore, it makes (or made) sense to let Nginx to buffer highly concurrent but slowly arriving requests until the entire request is received. Once each request is received completely, Nginx opens a connection to the backend and starts forwarding the request.\r\n\r\nProxies do provide knobs for changing the behavior. In case of Nginx, the knob is [`proxy_request_buffering`](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering). But the default is `on`, meaning that Nginx will try to buffer the entire request.\r\n\r\n@tfpauly \r\n> My initial inclination is to interpret this how @martinthomson does \u2014 essentially, that while POST clients \"cannot rely on incremental delivery\" in general, specific services can indeed provide incremental delivery where it is beneficial and desirable.\r\n\r\nI'm not sure if I agree with the interpretation considering that the MUST NOT in RFC 9205 section 3.1 follows this sentence: _This split between generic and application-specific semantics allows an HTTP message to be handled by common software (e.g., HTTP servers, intermediaries, client implementations, and caches) **without requiring those implementations to understand the application in use**_ (emphasis mine).\r\n\r\nBut even if we ignore RFC 9205, I'm still stuck with [this question](https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/19#issuecomment-2026468705).\r\n\r\nTo me, all the argument to use HTTP POST for Chunked OHTTTP seem to be equally applicable to WebSockets over H2/H3, masque, or connect-tcp. The arguments can be (or could have been) used to say that masque or connect-tcp should be built on top of HTTP POST, because the servers / intermediaries could be configured to start forwarding bytes without buffering at a per-resource basis.\r\n\r\nBut we chose to use extended CONNECT. Is there a reason to believe that for POST is a better choice for Chunked OHTTP while extended CONNECT is (was) a better choice for WebSockets over H2/H3, masque, and connect-udp?",
+          "createdAt": "2024-03-30T00:37:08Z",
+          "updatedAt": "2024-03-30T00:43:37Z"
+        }
+      ]
     }
   ],
   "pulls": [
