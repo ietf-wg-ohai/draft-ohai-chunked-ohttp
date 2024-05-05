@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 13 August 2024                                          Mozilla
-                                                        10 February 2024
+Expires: 6 November 2024                                         Mozilla
+                                                              5 May 2024
 
 
                     Chunked Oblivious HTTP Messages
@@ -48,7 +48,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 August 2024.
+   This Internet-Draft will expire on 6 November 2024.
 
 Copyright Notice
 
@@ -77,11 +77,12 @@ Table of Contents
      6.2.  Response Encapsulation
    7.  Security Considerations
      7.1.  Interactivity and Privacy
-     7.2.  message/ohttp-chunked-req Media Type
-     7.3.  message/ohttp-chunked-res Media Type
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   8.  IANA Considerations
+     8.1.  message/ohttp-chunked-req Media Type
+     8.2.  message/ohttp-chunked-res Media Type
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -162,8 +163,8 @@ Table of Contents
 
    Chunked Oblivious HTTP defines different media than the non-chunked
    variant.  These media types are "message/ohttp-chunked-req" (defined
-   in Section 7.2) and "message/ohttp-chunked-res" (defined in
-   Section 7.3).
+   in Section 8.1) and "message/ohttp-chunked-res" (defined in
+   Section 8.2).
 
 4.  Request Format
 
@@ -375,15 +376,16 @@ Table of Contents
    can choose to not base the sending of request chunks based on
    received response chunks.  These interactions can still benefit from
    chunked processing, without incurring additional observability risks.
-   # IANA Considerations
+
+8.  IANA Considerations
 
    This document updates the "Media Types" registry at
    https://iana.org/assignments/media-types
    (https://iana.org/assignments/media-types) to add the media types
-   "message/ohttp-chunked-req" (Section 7.2), and "message/ohttp-
-   chunked-res" (Section 7.3), following the procedures of [RFC6838].
+   "message/ohttp-chunked-req" (Section 8.1), and "message/ohttp-
+   chunked-res" (Section 8.2), following the procedures of [RFC6838].
 
-7.2.  message/ohttp-chunked-req Media Type
+8.1.  message/ohttp-chunked-req Media Type
 
    The "message/ohttp-chunked-req" identifies an encrypted binary HTTP
    request that is transmitted or processed in chunks.  This is a binary
@@ -413,7 +415,7 @@ Table of Contents
    Author:  see Authors' Addresses section
    Change controller:  IETF
 
-7.3.  message/ohttp-chunked-res Media Type
+8.2.  message/ohttp-chunked-res Media Type
 
    The "message/ohttp-chunked-res" identifies an encrypted binary HTTP
    response that is transmitted or processed in chunks.  This is a
@@ -443,9 +445,9 @@ Table of Contents
    Author:  see Authors' Addresses section
    Change controller:  IETF
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [BHTTP]    Thomson, M. and C. A. Wood, "Binary Representation of HTTP
               Messages", RFC 9292, DOI 10.17487/RFC9292, August 2022,
@@ -479,7 +481,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [HTTP]     Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,

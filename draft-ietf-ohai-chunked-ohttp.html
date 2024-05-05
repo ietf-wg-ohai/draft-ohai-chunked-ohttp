@@ -14,17 +14,17 @@ request or response is processed. This allows incremental processing of Obliviou
 HTTP messages, which is particularly useful for handling large messages or systems
 that process messages slowly. 
     " name="description">
-<meta content="xml2rfc 3.19.2" name="generator">
+<meta content="xml2rfc 3.21.0" name="generator">
 <meta content="draft-ietf-ohai-chunked-ohttp-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.2
-    Python 3.11.6
+  xml2rfc 3.21.0
+    Python 3.11.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 4.2.0
+    platformdirs 4.2.1
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
@@ -1029,11 +1029,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Chunked OHTTP</td>
-<td class="right">February 2024</td>
+<td class="right">May 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Pauly &amp; Thomson</td>
-<td class="center">Expires 13 August 2024</td>
+<td class="center">Expires 6 November 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ohai-chunked-ohttp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-02-10" class="published">10 February 2024</time>
+<time datetime="2024-05-05" class="published">5 May 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-08-13">13 August 2024</time></dd>
+<dd class="expires"><time datetime="2024-11-06">6 November 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1106,7 +1106,7 @@ that process messages slowly.<a href="#section-abstract-1" class="pilcrow">¶</a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1172,30 +1172,35 @@ that process messages slowly.<a href="#section-abstract-1" class="pilcrow">¶</a
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-interactivity-and-privacy" class="internal xref">Interactivity and Privacy</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-message-ohttp-chunked-req-m" class="internal xref">message/ohttp-chunked-req Media Type</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-message-ohttp-chunked-res-m" class="internal xref">message/ohttp-chunked-res Media Type</a></p>
-</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-message-ohttp-chunked-req-m" class="internal xref">message/ohttp-chunked-req Media Type</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-message-ohttp-chunked-res-m" class="internal xref">message/ohttp-chunked-res Media Type</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1273,8 +1278,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-chunked-request-and-respons" class="section-name selfRef">Chunked Request and Response Media Types</a>
       </h2>
 <p id="section-3-1">Chunked Oblivious HTTP defines different media than the non-chunked variant. These
-media types are "message/ohttp-chunked-req" (defined in <a href="#iana-req" class="auto internal xref">Section 7.2</a>) and
-"message/ohttp-chunked-res" (defined in <a href="#iana-res" class="auto internal xref">Section 7.3</a>).<a href="#section-3-1" class="pilcrow">¶</a></p>
+media types are "message/ohttp-chunked-req" (defined in <a href="#iana-req" class="auto internal xref">Section 8.1</a>) and
+"message/ohttp-chunked-res" (defined in <a href="#iana-res" class="auto internal xref">Section 8.2</a>).<a href="#section-3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="request">
@@ -1529,230 +1534,236 @@ might not achieve expected privacy outcomes.
 In order to prevent the Oblivious Gateway Resource from observing the round trip time
 to the client, client implementations can choose to not base the sending of request chunks based
 on received response chunks. These interactions can still benefit from chunked processing,
-without incurring additional observability risks.
-# IANA Considerations<a href="#section-7.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.1-4">This document updates the "Media Types" registry at
-<a href="https://iana.org/assignments/media-types">https://iana.org/assignments/media-types</a> to add the media types
-"message/ohttp-chunked-req" (<a href="#iana-req" class="auto internal xref">Section 7.2</a>), and
-"message/ohttp-chunked-res" (<a href="#iana-res" class="auto internal xref">Section 7.3</a>), following the procedures of
-<span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
+without incurring additional observability risks.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-8">
+      <h2 id="name-iana-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-8-1">This document updates the "Media Types" registry at
+<a href="https://iana.org/assignments/media-types">https://iana.org/assignments/media-types</a> to add the media types
+"message/ohttp-chunked-req" (<a href="#iana-req" class="auto internal xref">Section 8.1</a>), and
+"message/ohttp-chunked-res" (<a href="#iana-res" class="auto internal xref">Section 8.2</a>), following the procedures of
+<span>[<a href="#RFC6838" class="cite xref">RFC6838</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <div id="iana-req">
-<section id="section-7.2">
+<section id="section-8.1">
         <h3 id="name-message-ohttp-chunked-req-m">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-message-ohttp-chunked-req-m" class="section-name selfRef">message/ohttp-chunked-req Media Type</a>
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-message-ohttp-chunked-req-m" class="section-name selfRef">message/ohttp-chunked-req Media Type</a>
         </h3>
-<p id="section-7.2-1">The "message/ohttp-chunked-req" identifies an encrypted binary HTTP request
+<p id="section-8.1-1">The "message/ohttp-chunked-req" identifies an encrypted binary HTTP request
 that is transmitted or processed in chunks. This is a binary format that is
-defined in <a href="#request" class="auto internal xref">Section 4</a>.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlCompact dlParallel" id="section-7.2-2">
-          <dt id="section-7.2-2.1">Type name:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.2">
-            <p id="section-7.2-2.2.1">message<a href="#section-7.2-2.2.1" class="pilcrow">¶</a></p>
+defined in <a href="#request" class="auto internal xref">Section 4</a>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-8.1-2">
+          <dt id="section-8.1-2.1">Type name:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.2">
+            <p id="section-8.1-2.2.1">message<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.3">Subtype name:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.4">
-            <p id="section-7.2-2.4.1">ohttp-chunked-req<a href="#section-7.2-2.4.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.3">Subtype name:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.4">
+            <p id="section-8.1-2.4.1">ohttp-chunked-req<a href="#section-8.1-2.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.5">Required parameters:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.6">
-            <p id="section-7.2-2.6.1">N/A<a href="#section-7.2-2.6.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.5">Required parameters:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.6">
+            <p id="section-8.1-2.6.1">N/A<a href="#section-8.1-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.7">Optional parameters:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.8">
-            <p id="section-7.2-2.8.1">N/A<a href="#section-7.2-2.8.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.7">Optional parameters:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.8">
+            <p id="section-8.1-2.8.1">N/A<a href="#section-8.1-2.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.9">Encoding considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.10">
-            <p id="section-7.2-2.10.1">"binary"<a href="#section-7.2-2.10.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.9">Encoding considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.10">
+            <p id="section-8.1-2.10.1">"binary"<a href="#section-8.1-2.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.11">Security considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.12">
-            <p id="section-7.2-2.12.1">see <a href="#security" class="auto internal xref">Section 7</a><a href="#section-7.2-2.12.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.11">Security considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.12">
+            <p id="section-8.1-2.12.1">see <a href="#security" class="auto internal xref">Section 7</a><a href="#section-8.1-2.12.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.13">Interoperability considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.14">
-            <p id="section-7.2-2.14.1">N/A<a href="#section-7.2-2.14.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.13">Interoperability considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.14">
+            <p id="section-8.1-2.14.1">N/A<a href="#section-8.1-2.14.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.15">Published specification:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.16">
-            <p id="section-7.2-2.16.1">this specification<a href="#section-7.2-2.16.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.15">Published specification:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.16">
+            <p id="section-8.1-2.16.1">this specification<a href="#section-8.1-2.16.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.17">Applications that use this media type:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.18">
-            <p id="section-7.2-2.18.1">Oblivious HTTP and applications that use Oblivious HTTP use this media type to
-identify encapsulated binary HTTP requests that are incrementally generated or processed.<a href="#section-7.2-2.18.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.17">Applications that use this media type:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.18">
+            <p id="section-8.1-2.18.1">Oblivious HTTP and applications that use Oblivious HTTP use this media type to
+identify encapsulated binary HTTP requests that are incrementally generated or processed.<a href="#section-8.1-2.18.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.19">Fragment identifier considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.20">
-            <p id="section-7.2-2.20.1">N/A<a href="#section-7.2-2.20.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.19">Fragment identifier considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.20">
+            <p id="section-8.1-2.20.1">N/A<a href="#section-8.1-2.20.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.21">Additional information:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.22">
-            <span class="break"></span><dl class="dlCompact dlParallel" id="section-7.2-2.22.1">
-              <dt id="section-7.2-2.22.1.1">Magic number(s):</dt>
-              <dd style="margin-left: 1.5em" id="section-7.2-2.22.1.2">N/A<a href="#section-7.2-2.22.1.2" class="pilcrow">¶</a>
+<dt id="section-8.1-2.21">Additional information:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.22">
+            <span class="break"></span><dl class="dlCompact dlParallel" id="section-8.1-2.22.1">
+              <dt id="section-8.1-2.22.1.1">Magic number(s):</dt>
+              <dd style="margin-left: 1.5em" id="section-8.1-2.22.1.2">N/A<a href="#section-8.1-2.22.1.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.2-2.22.1.3">Deprecated alias names for this type:</dt>
-              <dd style="margin-left: 1.5em" id="section-7.2-2.22.1.4">N/A<a href="#section-7.2-2.22.1.4" class="pilcrow">¶</a>
+<dt id="section-8.1-2.22.1.3">Deprecated alias names for this type:</dt>
+              <dd style="margin-left: 1.5em" id="section-8.1-2.22.1.4">N/A<a href="#section-8.1-2.22.1.4" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.2-2.22.1.5">File extension(s):</dt>
-              <dd style="margin-left: 1.5em" id="section-7.2-2.22.1.6">N/A<a href="#section-7.2-2.22.1.6" class="pilcrow">¶</a>
+<dt id="section-8.1-2.22.1.5">File extension(s):</dt>
+              <dd style="margin-left: 1.5em" id="section-8.1-2.22.1.6">N/A<a href="#section-8.1-2.22.1.6" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.2-2.22.1.7">Macintosh file type code(s):</dt>
-              <dd style="margin-left: 1.5em" id="section-7.2-2.22.1.8">N/A<a href="#section-7.2-2.22.1.8" class="pilcrow">¶</a>
+<dt id="section-8.1-2.22.1.7">Macintosh file type code(s):</dt>
+              <dd style="margin-left: 1.5em" id="section-8.1-2.22.1.8">N/A<a href="#section-8.1-2.22.1.8" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.23">Person and email address to contact for further information:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.24">
-            <p id="section-7.2-2.24.1">see Authors' Addresses section<a href="#section-7.2-2.24.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.23">Person and email address to contact for further information:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.24">
+            <p id="section-8.1-2.24.1">see Authors' Addresses section<a href="#section-8.1-2.24.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.25">Intended usage:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.26">
-            <p id="section-7.2-2.26.1">COMMON<a href="#section-7.2-2.26.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.25">Intended usage:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.26">
+            <p id="section-8.1-2.26.1">COMMON<a href="#section-8.1-2.26.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.27">Restrictions on usage:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.28">
-            <p id="section-7.2-2.28.1">N/A<a href="#section-7.2-2.28.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.27">Restrictions on usage:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.28">
+            <p id="section-8.1-2.28.1">N/A<a href="#section-8.1-2.28.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.29">Author:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.30">
-            <p id="section-7.2-2.30.1">see Authors' Addresses section<a href="#section-7.2-2.30.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.29">Author:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.30">
+            <p id="section-8.1-2.30.1">see Authors' Addresses section<a href="#section-8.1-2.30.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.2-2.31">Change controller:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.2-2.32">
-            <p id="section-7.2-2.32.1">IETF<a href="#section-7.2-2.32.1" class="pilcrow">¶</a></p>
+<dt id="section-8.1-2.31">Change controller:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.1-2.32">
+            <p id="section-8.1-2.32.1">IETF<a href="#section-8.1-2.32.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="iana-res">
-<section id="section-7.3">
+<section id="section-8.2">
         <h3 id="name-message-ohttp-chunked-res-m">
-<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-message-ohttp-chunked-res-m" class="section-name selfRef">message/ohttp-chunked-res Media Type</a>
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-message-ohttp-chunked-res-m" class="section-name selfRef">message/ohttp-chunked-res Media Type</a>
         </h3>
-<p id="section-7.3-1">The "message/ohttp-chunked-res" identifies an encrypted binary HTTP response
+<p id="section-8.2-1">The "message/ohttp-chunked-res" identifies an encrypted binary HTTP response
 that is transmitted or processed in chunks. This is a binary format that
-is defined in <a href="#response" class="auto internal xref">Section 5</a>.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlCompact dlParallel" id="section-7.3-2">
-          <dt id="section-7.3-2.1">Type name:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.2">
-            <p id="section-7.3-2.2.1">message<a href="#section-7.3-2.2.1" class="pilcrow">¶</a></p>
+is defined in <a href="#response" class="auto internal xref">Section 5</a>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-8.2-2">
+          <dt id="section-8.2-2.1">Type name:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.2">
+            <p id="section-8.2-2.2.1">message<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.3">Subtype name:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.4">
-            <p id="section-7.3-2.4.1">ohttp-chunked-res<a href="#section-7.3-2.4.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.3">Subtype name:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.4">
+            <p id="section-8.2-2.4.1">ohttp-chunked-res<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.5">Required parameters:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.6">
-            <p id="section-7.3-2.6.1">N/A<a href="#section-7.3-2.6.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.5">Required parameters:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.6">
+            <p id="section-8.2-2.6.1">N/A<a href="#section-8.2-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.7">Optional parameters:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.8">
-            <p id="section-7.3-2.8.1">N/A<a href="#section-7.3-2.8.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.7">Optional parameters:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.8">
+            <p id="section-8.2-2.8.1">N/A<a href="#section-8.2-2.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.9">Encoding considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.10">
-            <p id="section-7.3-2.10.1">"binary"<a href="#section-7.3-2.10.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.9">Encoding considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.10">
+            <p id="section-8.2-2.10.1">"binary"<a href="#section-8.2-2.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.11">Security considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.12">
-            <p id="section-7.3-2.12.1">see <a href="#security" class="auto internal xref">Section 7</a><a href="#section-7.3-2.12.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.11">Security considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.12">
+            <p id="section-8.2-2.12.1">see <a href="#security" class="auto internal xref">Section 7</a><a href="#section-8.2-2.12.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.13">Interoperability considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.14">
-            <p id="section-7.3-2.14.1">N/A<a href="#section-7.3-2.14.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.13">Interoperability considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.14">
+            <p id="section-8.2-2.14.1">N/A<a href="#section-8.2-2.14.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.15">Published specification:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.16">
-            <p id="section-7.3-2.16.1">this specification<a href="#section-7.3-2.16.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.15">Published specification:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.16">
+            <p id="section-8.2-2.16.1">this specification<a href="#section-8.2-2.16.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.17">Applications that use this media type:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.18">
-            <p id="section-7.3-2.18.1">Oblivious HTTP and applications that use Oblivious HTTP use this media type to
-identify encapsulated binary HTTP responses that are incrementally generated or processed.<a href="#section-7.3-2.18.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.17">Applications that use this media type:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.18">
+            <p id="section-8.2-2.18.1">Oblivious HTTP and applications that use Oblivious HTTP use this media type to
+identify encapsulated binary HTTP responses that are incrementally generated or processed.<a href="#section-8.2-2.18.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.19">Fragment identifier considerations:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.20">
-            <p id="section-7.3-2.20.1">N/A<a href="#section-7.3-2.20.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.19">Fragment identifier considerations:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.20">
+            <p id="section-8.2-2.20.1">N/A<a href="#section-8.2-2.20.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.21">Additional information:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.22">
-            <span class="break"></span><dl class="dlCompact dlParallel" id="section-7.3-2.22.1">
-              <dt id="section-7.3-2.22.1.1">Magic number(s):</dt>
-              <dd style="margin-left: 1.5em" id="section-7.3-2.22.1.2">N/A<a href="#section-7.3-2.22.1.2" class="pilcrow">¶</a>
+<dt id="section-8.2-2.21">Additional information:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.22">
+            <span class="break"></span><dl class="dlCompact dlParallel" id="section-8.2-2.22.1">
+              <dt id="section-8.2-2.22.1.1">Magic number(s):</dt>
+              <dd style="margin-left: 1.5em" id="section-8.2-2.22.1.2">N/A<a href="#section-8.2-2.22.1.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.3-2.22.1.3">Deprecated alias names for this type:</dt>
-              <dd style="margin-left: 1.5em" id="section-7.3-2.22.1.4">N/A<a href="#section-7.3-2.22.1.4" class="pilcrow">¶</a>
+<dt id="section-8.2-2.22.1.3">Deprecated alias names for this type:</dt>
+              <dd style="margin-left: 1.5em" id="section-8.2-2.22.1.4">N/A<a href="#section-8.2-2.22.1.4" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.3-2.22.1.5">File extension(s):</dt>
-              <dd style="margin-left: 1.5em" id="section-7.3-2.22.1.6">N/A<a href="#section-7.3-2.22.1.6" class="pilcrow">¶</a>
+<dt id="section-8.2-2.22.1.5">File extension(s):</dt>
+              <dd style="margin-left: 1.5em" id="section-8.2-2.22.1.6">N/A<a href="#section-8.2-2.22.1.6" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-7.3-2.22.1.7">Macintosh file type code(s):</dt>
-              <dd style="margin-left: 1.5em" id="section-7.3-2.22.1.8">N/A<a href="#section-7.3-2.22.1.8" class="pilcrow">¶</a>
+<dt id="section-8.2-2.22.1.7">Macintosh file type code(s):</dt>
+              <dd style="margin-left: 1.5em" id="section-8.2-2.22.1.8">N/A<a href="#section-8.2-2.22.1.8" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.23">Person and email address to contact for further information:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.24">
-            <p id="section-7.3-2.24.1">see Authors' Addresses section<a href="#section-7.3-2.24.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.23">Person and email address to contact for further information:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.24">
+            <p id="section-8.2-2.24.1">see Authors' Addresses section<a href="#section-8.2-2.24.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.25">Intended usage:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.26">
-            <p id="section-7.3-2.26.1">COMMON<a href="#section-7.3-2.26.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.25">Intended usage:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.26">
+            <p id="section-8.2-2.26.1">COMMON<a href="#section-8.2-2.26.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.27">Restrictions on usage:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.28">
-            <p id="section-7.3-2.28.1">N/A<a href="#section-7.3-2.28.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.27">Restrictions on usage:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.28">
+            <p id="section-8.2-2.28.1">N/A<a href="#section-8.2-2.28.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.29">Author:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.30">
-            <p id="section-7.3-2.30.1">see Authors' Addresses section<a href="#section-7.3-2.30.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.29">Author:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.30">
+            <p id="section-8.2-2.30.1">see Authors' Addresses section<a href="#section-8.2-2.30.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-7.3-2.31">Change controller:</dt>
-          <dd style="margin-left: 1.5em" id="section-7.3-2.32">
-            <p id="section-7.3-2.32.1">IETF<a href="#section-7.3-2.32.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.31">Change controller:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.32">
+            <p id="section-8.2-2.32.1">IETF<a href="#section-8.2-2.32.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1760,14 +1771,14 @@ identify encapsulated binary HTTP responses that are incrementally generated or 
 </div>
 </section>
 </div>
-<section id="section-8">
+<section id="section-9">
       <h2 id="name-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-8.1">
+<section id="section-9.1">
         <h3 id="name-normative-references">
-<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="BHTTP">[BHTTP]</dt>
@@ -1802,9 +1813,9 @@ identify encapsulated binary HTTP responses that are incrementally generated or 
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-8.2">
+<section id="section-9.2">
         <h3 id="name-informative-references">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="HTTP">[HTTP]</dt>
