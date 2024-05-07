@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-05T00:48:05.719299+00:00",
+  "timestamp": "2024-05-07T00:44:14.698887+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -412,6 +412,22 @@
           "updatedAt": "2024-03-30T00:43:37Z"
         }
       ]
+    },
+    {
+      "number": 20,
+      "id": "I_kwDOJtaXUM6H4sfr",
+      "title": "Be more explicit about interactivity",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/20",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Note that the relay might buffer, which is OK.  But if you expect to interact (that is, multiple rounds of communication), buffering will make things break.\r\n\r\nThis is not going to work for 100-continue, so we should note that.  But maybe clients can arrange with intermediaries to disabling buffering for that case.  This will work anyway unless the buffering is indefinite.",
+      "createdAt": "2024-05-05T23:21:16Z",
+      "updatedAt": "2024-05-05T23:22:32Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
