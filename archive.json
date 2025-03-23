@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-20T01:00:42.967910+00:00",
+  "timestamp": "2025-03-23T01:06:12.909491+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -1642,6 +1642,34 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 35,
+      "id": "PR_kwDOJtaXUM6Pa0A0",
+      "title": "Add acknowledgment",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/35",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-20T08:42:26Z",
+      "updatedAt": "2025-03-20T08:42:27Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "03d98be2658f1b54b8da6cfd9e5f24e7a0815a36",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "tfpauly-patch-8",
+      "headRefOid": "c4efc9536c05c6fc48adb069f6d720e5d87f31eb",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
