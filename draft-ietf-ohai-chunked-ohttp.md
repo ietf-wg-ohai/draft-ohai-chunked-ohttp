@@ -577,4 +577,4 @@ Change controller:
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledgements.
+Thanks to Chris Wood for helping build an initial test implementation and providing reviews.
