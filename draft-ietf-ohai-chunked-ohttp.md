@@ -217,8 +217,9 @@ pieces of information:
 
 1. the order of the chunks (the sequence number of each chunk), which is
 included in the nonce of each chunk.
-1. which chunk is the final chunk, which is indicated by a sentinel in the AAD
-of the final chunk.
+1. which chunk is the final chunk, which is indicated by a sentinel
+   in the Additional Authenticated Data (AAD)
+   of the final chunk.
 
 The format of the outer packaging that carries the chunks (the length prefix for each
 chunk specifically) is not explicitly authenticated. This allows the chunks to be
@@ -573,6 +574,147 @@ Change controller:
 {: spacing="compact"}
 
 --- back
+
+# Example
+
+<!-- Generated using ohttp (https://github.com/martinthomson/ohttp/tree/stream):
+RUST_LOG=ohttp cargo test -\-features nss,stream,client,server,unsafe-print-secrets -\-no-default-features -p ohttp -\-lib -\- -\-nocapture split_in
+Note: The "rust-hpke" crate doesn't log the client/sender keying material; this needs NSS.
+-->
+
+A single request and response exchange is shown here.
+This follows the same basic setup as the example in {{Appendix A of OHTTP}}.
+
+The Oblivious Gateway Resource key pair is generated with a X25519 secret key of:
+
+~~~ hex-dump
+1c190d72acdbe4dbc69e680503bb781a932c70a12c8f3754434c67d8640d8698
+~~~
+
+The corresponding key configuration is:
+
+~~~ hex-dump
+010020668eb21aace159803974a4c67f08b4152d29bed10735fd08f98ccdd6fe
+09570800080001000100010003
+~~~
+
+This key configuration is somehow obtained by the Client,
+which constructs a binary HTTP request:
+
+~~~ hex-dump
+00034745540568747470730b6578616d706c652e636f6d012f
+~~~
+
+The client constructs an HPKE sending context with a secret key of:
+
+~~~ hex-dump
+b26d565f3f875ed480d1abced3d665159650c99174fd0b124ac4bda0c64ae324
+~~~
+
+The corresponding public key is:
+
+~~~ hex-dump
+8811eb457e100811c40a0aa71340a1b81d804bb986f736f2f566a7199761a032
+~~~
+
+The context is created with an `info` parameter of:
+
+~~~ hex-dump
+6d6573736167652f6268747470206368756e6b65642072657175657374000100
+2000010001
+~~~
+
+This produces an encrypted
+message, allowing the Client to construct the following Encapsulated Request:
+
+~~~ hex-dump
+01002000010001
+8811eb457e100811c40a0aa71340a1b81d804bb986f736f2f566a7199761a032
+1c2ad24942d4d692563012f2980c8fef437a336b9b2fc938ef77a5834f
+1d2e33d8fd25577afe31bd1c79d094f76b6250ae6549b473ecd950501311
+001c6c1395d0ef7c1022297966307b8a7f
+~~~
+
+This message contains a header, the encapsulated secret, and three encrypted chunks.
+Line breaks are included above to show where these chunks start.
+
+The encrypted chunks are the result of invoking the HPKE `ContextS.Seal()` function three times:
+the first with 12 bytes of the request,
+the second with the remaining 13 bytes,
+and the last containing no data.
+This final chunk is marked by a zero length in the encoding
+and an AAD of "final" to protect against undetected message truncation.
+Each chunk is expanded by 16 bytes for AEAD protection.
+
+{:aside}
+> A BSD-like `read()` interface that returns 0
+> when it reaches the end of a stream
+> naturally leads to a zero-length chunk like this
+> if the data returned is protected immediately.
+
+After sending this to the Oblivious Relay Resource, the
+Oblivious Gateway Resource decrypts and processes this message.
+The Target Resource produces a response like:
+
+~~~ hex-dump
+0140c8
+~~~
+
+The response is protected by exporting a secret from the HPKE context,
+using input keying material of:
+
+~~~ hex-dump
+1d4484834ae36102a6ac42a5523454d9
+~~~
+
+The salt is:
+
+~~~ hex-dump
+8811eb457e100811c40a0aa71340a1b81d804bb986f736f2f566a7199761a032
+bcce7f4cb921309ba5d62edf1769ef09
+~~~
+
+From these, HKDF-SHA256 produces a pseudorandom key of:
+
+~~~ hex-dump
+3967884b5f7b4bce4a5320a3e3f79fdc97389f7deba1c1e11c5ea62278187786
+~~~
+
+The resulting AES-GCM key is:
+
+~~~ hex-dump
+8209f78f2a1610d80c7125009b00aff0
+~~~
+
+The 12-byte base nonce is:
+
+~~~ hex-dump
+fead854635d2d5527d64f546
+~~~
+
+The AEAD `Seal()` function is then used to encrypt the response in chunks
+to produce the Encapsulated Response:
+
+~~~ hex-dump
+bcce7f4cb921309ba5d62edf1769ef09
+1179bf1cc87fa0e2c02de4546945aa3d1e48
+12b348b5bd4c594c16b6170b07b475845d1f32
+00ed9d8a796617a5b27265f4d73247f639
+~~~
+
+This example is split onto separate lines to show the nonce and three chunks:
+the first with one byte of response,
+the second with the remaining two bytes,
+and the final with zero bytes of data.
+
+The nonce for processing the chunks are:
+
+~~~ hex-dump
+fead854635d2d5527d64f546
+fead854635d2d5527d64f547
+fead854635d2d5527d64f544
+~~~
+
 
 # Acknowledgments
 {:numbered="false"}
