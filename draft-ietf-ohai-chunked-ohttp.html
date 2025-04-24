@@ -14,17 +14,17 @@ request or response is processed. This allows incremental processing of Obliviou
 HTTP messages, which is particularly useful for handling large messages or systems
 that process messages slowly. 
     " name="description">
-<meta content="xml2rfc 3.28.0" name="generator">
+<meta content="xml2rfc 3.28.1" name="generator">
 <meta content="draft-ietf-ohai-chunked-ohttp-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.0
-    Python 3.12.9
+  xml2rfc 3.28.1
+    Python 3.12.10
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.0
-    platformdirs 4.3.6
+    platformdirs 4.3.7
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.3
@@ -1048,11 +1048,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Chunked OHTTP</td>
-<td class="right">March 2025</td>
+<td class="right">April 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Pauly &amp; Thomson</td>
-<td class="center">Expires 25 September 2025</td>
+<td class="center">Expires 26 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ohai-chunked-ohttp-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-24" class="published">24 March 2025</time>
+<time datetime="2025-04-24" class="published">24 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-25">25 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-10-26">26 October 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1128,7 +1128,7 @@ that process messages slowly.<a href="#section-abstract-1" class="pilcrow">¶</a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1274,13 +1274,19 @@ is support for Informational (1xx) responses
 <p id="section-1.1-4">In order to be useful, the content of chunked Oblivious HTTP needs to be
 possible to process incrementally. Since incremental processing means that the
 message might end up being truncated, for example in the case of an error on the
-underlying transport, applications also need to be prepared to safely handle incomplete
-messages (see <a href="#security" class="auto internal xref">Section 7</a> for more discussion). Applications that use the Indeterminate
-format of Binary HTTP (<span><a href="https://rfc-editor.org/rfc/rfc9292#section-3.2" class="relref">Section 3.2</a> of [<a href="#BHTTP" class="cite xref">BHTTP</a>]</span>) are well-suited
-to using chunked Oblivious HTTP.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
-<p id="section-1.1-5">Chunked Oblivious HTTP is not intended to be used for long-lived sessions
+underlying transport, applications also need to be prepared to safely handle
+incomplete messages (see <a href="#security" class="auto internal xref">Section 7</a> for more discussion). Choices about how
+the inner content is structured can be made independently of this chunked
+format; that is, Binary HTTP chunks do need not to align with those
+of OHTTP.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">Applications that use the Indeterminate format of Binary HTTP (<span><a href="https://rfc-editor.org/rfc/rfc9292#section-3.2" class="relref">Section 3.2</a> of [<a href="#BHTTP" class="cite xref">BHTTP</a>]</span>) are well-suited to using chunked Oblivious HTTP as it enables
+incremental construction of messages.  That only applies to construction; how a
+message can be processed after decryption depends on how the format is
+processed.  Binary HTTP messages in any format (either Known- or
+Indeterminate-Length) can be incrementally processed.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
+<p id="section-1.1-6">Chunked Oblivious HTTP is not intended to be used for long-lived sessions
 between clients and servers that might build up state, or as a replacement
-for a proxied TLS session.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
+for a proxied TLS session.<a href="#section-1.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
