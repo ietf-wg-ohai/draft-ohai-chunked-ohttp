@@ -84,10 +84,18 @@ is support for Informational (1xx) responses
 In order to be useful, the content of chunked Oblivious HTTP needs to be
 possible to process incrementally. Since incremental processing means that the
 message might end up being truncated, for example in the case of an error on the
-underlying transport, applications also need to be prepared to safely handle incomplete
-messages (see {{security}} for more discussion). Applications that use the Indeterminate
-format of Binary HTTP ({{Section 3.2 of !BHTTP=RFC9292}}) are well-suited
-to using chunked Oblivious HTTP.
+underlying transport, applications also need to be prepared to safely handle
+incomplete messages (see {{security}} for more discussion). Choices about how
+the inner content is structured can be made independently of this chunked
+format; that is, Binary HTTP chunks do need not to align with those
+of OHTTP.
+
+Applications that use the Indeterminate format of Binary HTTP ({{Section 3.2 of
+!BHTTP=RFC9292}}) are well-suited to using chunked Oblivious HTTP as it enables
+incremental construction of messages.  That only applies to construction; how a
+message can be processed after decryption depends on how the format is
+processed.  Binary HTTP messages in any format (either Known- or
+Indeterminate-Length) can be incrementally processed.
 
 Chunked Oblivious HTTP is not intended to be used for long-lived sessions
 between clients and servers that might build up state, or as a replacement
