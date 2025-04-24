@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-20T01:08:41.747375+00:00",
+  "timestamp": "2025-04-24T01:04:44.695575+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -528,6 +528,54 @@
           "body": "Thanks for the explanation, that makes sense!",
           "createdAt": "2024-12-09T04:26:40Z",
           "updatedAt": "2024-12-09T04:26:40Z"
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "id": "I_kwDOJtaXUM6zsukm",
+      "title": "Clarify whether Known-length Binary OHTTP is supported",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/36",
+      "state": "OPEN",
+      "author": "vanessareimer",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft says \"_Applications that use the Indeterminate format of Binary HTTP (Section 3.2 of [BHTTP]) are well-suited to using chunked Oblivious HTTP._\" However there isn't any indication whether known-length format of Binary HTTP should also be supported here. A possible use case of this Known-length BHTTP + Chunked OHTTP is for transferring very big files like a software update.\n\nThinking through the 4 combos:\n\n1. Known-length BHTTP + regular OHTTP -- straightforward\n2. Known-length BHTTP + Chunked OHTTP -- **need clarification around whether supported**\n3. Indeterminate-length BHTTP + regular OHTTP -- kind of pointless, since need to know length before sending one OHTTP message\n4. Indeterminate-length BHTTP + Chunked OHTTP -- streaming use case\n\n",
+      "createdAt": "2025-04-23T17:53:38Z",
+      "updatedAt": "2025-04-24T00:56:09Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The choice is orthogonal.  The \"well-suited\" language is deliberate.  If you think that there is value in incremental decryption for a unitary message, then you should be free to use it.  The only combination that probably doesn't make sense is the third option you list, but I see no point in telling people not to do pointless stuff (or we'd do little else).",
+          "createdAt": "2025-04-24T00:56:08Z",
+          "updatedAt": "2025-04-24T00:56:08Z"
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "id": "I_kwDOJtaXUM6zu1jh",
+      "title": "Clarifying bounds between RFC 9292 chunks and OHTTP chunks",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/37",
+      "state": "OPEN",
+      "author": "Rickyp",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "When applying OHTTP chunking to RFC 9292 indeterminate-length messages, are the OHTTP chunk boundaries independent of the underlying binary HTTP indeterminate-length chunk boundaries? Or is there a specific relationship between the two layers, like one of the following:\n\nA. OHTTP chunks align precisely (1 to 1) with binary HTTP indeterminate-length chunks.\nB. A single OHTTP chunk can contain multiple binary HTTP indeterminate-length chunks.\nC. A single binary HTTP indeterminate-length chunk can be split across multiple OHTTP chunks.",
+      "createdAt": "2025-04-23T22:41:39Z",
+      "updatedAt": "2025-04-24T01:01:32Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In my response to #36, I observed that these are entirely orthogonal.  If you like, you could align chunks.  That might happen naturally.  That might be a good idea, because -- depending on your code architecture -- some receivers might benefit from being able to release chunks at both layers.\n\nFWIW, my own implementation streams BHTTP fully, without any real dependency on the chunking structure, so there is no need for any alignment, other than what might naturally occur due to write patterns and data availability.  The nice thing about that arrangement is that incremental processing is available, regardless of how the BHTTP message is structured.  (It was a gigantic pain to implement, but I blame Rust for that.)\n\nIt sounds like we should maybe say a little bit more about the choice of format in the draft.",
+          "createdAt": "2025-04-24T01:01:31Z",
+          "updatedAt": "2025-04-24T01:01:31Z"
         }
       ]
     }
