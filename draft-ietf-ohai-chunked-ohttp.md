@@ -707,7 +707,7 @@ the first with one byte of response,
 the second with the remaining two bytes,
 and the final with zero bytes of data.
 
-The nonce for processing the chunks are:
+The nonces for processing the chunks are, in order:
 
 ~~~ hex-dump
 fead854635d2d5527d64f546
