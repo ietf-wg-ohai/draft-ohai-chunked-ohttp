@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-24T01:04:44.695575+00:00",
+  "timestamp": "2025-04-27T01:08:58.880164+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -239,9 +239,17 @@
       "labels": [],
       "body": "Since the design is basically HPKE for requests and TLS record layer for responses, I wonder if the document would benefit from leaning on existing analyses for these things, and [this](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/08/191.pdf) in particular.",
       "createdAt": "2023-09-18T20:31:18Z",
-      "updatedAt": "2023-09-18T20:31:18Z",
+      "updatedAt": "2025-04-24T06:47:45Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't really have the expertise (or time) to do that.  I will observe that there are some critical differences between this design and the TLS record layer analysis that might make this less obvious:\n\n1. Proofs of TLS won't have included undetectable truncation of the data stream at record boundaries.  TLS includes a stream termination signal, but it's not at the record layer and it is rarely used.  This design has an integral end-of-stream indicator that is (I believe) very hard to break.\n2. The TLS record layer has padding, which we don't use.\n3. The HPKE part has the same stream terminator design as the response piece.\n\nIntuitively at least, the padding thing would seem to simplify any analysis, but the stream termination would be somewhat new.  Either way, I'm not sure that an analysis would be anything other than a nice feature.",
+          "createdAt": "2025-04-24T06:47:44Z",
+          "updatedAt": "2025-04-24T06:47:44Z"
+        }
+      ]
     },
     {
       "number": 12,
@@ -286,7 +294,7 @@
       "id": "I_kwDOJtaXUM5xWbUS",
       "title": "Test vectors",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/13",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chris-wood",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -297,8 +305,8 @@
       ],
       "body": "We should probably have some!",
       "createdAt": "2023-09-18T20:38:34Z",
-      "updatedAt": "2025-04-17T12:42:29Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-25T12:28:01Z",
+      "closedAt": "2025-04-25T12:28:01Z",
       "comments": []
     },
     {
@@ -536,15 +544,15 @@
       "id": "I_kwDOJtaXUM6zsukm",
       "title": "Clarify whether Known-length Binary OHTTP is supported",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/36",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "vanessareimer",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "The draft says \"_Applications that use the Indeterminate format of Binary HTTP (Section 3.2 of [BHTTP]) are well-suited to using chunked Oblivious HTTP._\" However there isn't any indication whether known-length format of Binary HTTP should also be supported here. A possible use case of this Known-length BHTTP + Chunked OHTTP is for transferring very big files like a software update.\n\nThinking through the 4 combos:\n\n1. Known-length BHTTP + regular OHTTP -- straightforward\n2. Known-length BHTTP + Chunked OHTTP -- **need clarification around whether supported**\n3. Indeterminate-length BHTTP + regular OHTTP -- kind of pointless, since need to know length before sending one OHTTP message\n4. Indeterminate-length BHTTP + Chunked OHTTP -- streaming use case\n\n",
       "createdAt": "2025-04-23T17:53:38Z",
-      "updatedAt": "2025-04-24T00:56:09Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-24T14:22:59Z",
+      "closedAt": "2025-04-24T14:22:59Z",
       "comments": [
         {
           "author": "martinthomson",
@@ -552,6 +560,13 @@
           "body": "The choice is orthogonal.  The \"well-suited\" language is deliberate.  If you think that there is value in incremental decryption for a unitary message, then you should be free to use it.  The only combination that probably doesn't make sense is the third option you list, but I see no point in telling people not to do pointless stuff (or we'd do little else).",
           "createdAt": "2025-04-24T00:56:08Z",
           "updatedAt": "2025-04-24T00:56:08Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I also found this unclear. I think it would be helpful to specify which of these are allowed because otherwise we'll run into interoperability issues. And if the answer is that all of them are allowed, then that's fine - but we need to avoid people assuming that one isn't useful and choosing not to implement parsing it.",
+          "createdAt": "2025-04-24T01:14:48Z",
+          "updatedAt": "2025-04-24T01:14:48Z"
         }
       ]
     },
@@ -560,15 +575,15 @@
       "id": "I_kwDOJtaXUM6zu1jh",
       "title": "Clarifying bounds between RFC 9292 chunks and OHTTP chunks",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/37",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "Rickyp",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "When applying OHTTP chunking to RFC 9292 indeterminate-length messages, are the OHTTP chunk boundaries independent of the underlying binary HTTP indeterminate-length chunk boundaries? Or is there a specific relationship between the two layers, like one of the following:\n\nA. OHTTP chunks align precisely (1 to 1) with binary HTTP indeterminate-length chunks.\nB. A single OHTTP chunk can contain multiple binary HTTP indeterminate-length chunks.\nC. A single binary HTTP indeterminate-length chunk can be split across multiple OHTTP chunks.",
       "createdAt": "2025-04-23T22:41:39Z",
-      "updatedAt": "2025-04-24T01:01:32Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-24T14:23:00Z",
+      "closedAt": "2025-04-24T14:23:00Z",
       "comments": [
         {
           "author": "martinthomson",
@@ -576,6 +591,13 @@
           "body": "In my response to #36, I observed that these are entirely orthogonal.  If you like, you could align chunks.  That might happen naturally.  That might be a good idea, because -- depending on your code architecture -- some receivers might benefit from being able to release chunks at both layers.\n\nFWIW, my own implementation streams BHTTP fully, without any real dependency on the chunking structure, so there is no need for any alignment, other than what might naturally occur due to write patterns and data availability.  The nice thing about that arrangement is that incremental processing is available, regardless of how the BHTTP message is structured.  (It was a gigantic pain to implement, but I blame Rust for that.)\n\nIt sounds like we should maybe say a little bit more about the choice of format in the draft.",
           "createdAt": "2025-04-24T01:01:31Z",
           "updatedAt": "2025-04-24T01:01:31Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Similar to #36, I think it would make sense to add text to make clear that these are orthogonal. Having senders align chunks is fine, but we want to avoid a lazy receiver relying on that.",
+          "createdAt": "2025-04-24T01:16:58Z",
+          "updatedAt": "2025-04-24T01:16:58Z"
         }
       ]
     }
@@ -1722,6 +1744,136 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 38,
+      "id": "PR_kwDOJtaXUM6Trgwj",
+      "title": "orthogonality of chunking with inner format",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/38",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I thought that this was obvious, but two other people didn't, so it's worth explaining.\r\n\r\nCloses #36.\r\nCloses #37.",
+      "createdAt": "2025-04-24T01:27:25Z",
+      "updatedAt": "2025-04-24T14:22:58Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "109db8945d47e00bbb674f6034db8d900557b236",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "orthogonal-bhttp",
+      "headRefOid": "f862dd6e20f2bb89dda4c1bb81cf9d97227554bc",
+      "closedAt": "2025-04-24T14:22:58Z",
+      "mergedAt": "2025-04-24T14:22:58Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "08395d1b397d07290ce936ad93305f72b4f20e48"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM6mPvF9",
+          "commit": {
+            "abbreviatedOid": "fb59501"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "This helps. Adding a bit more detail since I'm one of those people for whom things aren't obvious",
+          "createdAt": "2025-04-24T01:51:55Z",
+          "updatedAt": "2025-04-24T01:53:59Z",
+          "comments": [
+            {
+              "originalPosition": 11,
+              "body": "```suggestion\r\nformat; that is, Binary HTTP chunks do need not to align with those\r\nof OHTTP.\r\n```",
+              "createdAt": "2025-04-24T01:51:55Z",
+              "updatedAt": "2025-04-24T02:47:56Z"
+            },
+            {
+              "originalPosition": 17,
+              "body": "```suggestion\r\nprocessed.  Binary HTTP messages in any format (either Known- or\r\nIndeterminate-Length) can be incrementally processed.\r\n```",
+              "createdAt": "2025-04-24T01:53:00Z",
+              "updatedAt": "2025-04-24T02:48:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM6mQPpN",
+          "commit": {
+            "abbreviatedOid": "f862dd6"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks!",
+          "createdAt": "2025-04-24T02:50:18Z",
+          "updatedAt": "2025-04-24T02:50:18Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJtaXUM6mWQdo",
+          "commit": {
+            "abbreviatedOid": "f862dd6"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Looks great!",
+          "createdAt": "2025-04-24T12:05:35Z",
+          "updatedAt": "2025-04-24T12:05:35Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "id": "PR_kwDOJtaXUM6T2Hsp",
+      "title": "Include some examples",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/39",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I took care to ensure that the nonce generation was interesting.  The way we count is 6 is followed by 7 is followed by 4.\r\n\r\nCloses #13.",
+      "createdAt": "2025-04-25T01:03:34Z",
+      "updatedAt": "2025-04-25T12:28:03Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "08395d1b397d07290ce936ad93305f72b4f20e48",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "examples",
+      "headRefOid": "ab825121a33d2ab75cadd834a16da01524e450a5",
+      "closedAt": "2025-04-25T12:28:00Z",
+      "mergedAt": "2025-04-25T12:28:00Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "8bbd9e38522f88018b5d0e545b29c3c62903bfba"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM6mhkvr",
+          "commit": {
+            "abbreviatedOid": "9aab88b"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for doing this!",
+          "createdAt": "2025-04-25T11:27:58Z",
+          "updatedAt": "2025-04-25T11:28:11Z",
+          "comments": [
+            {
+              "originalPosition": 148,
+              "body": "Should this be plural?\r\n\r\n```suggestion\r\nThe nonces for processing the chunks are, in order:\r\n```\r\n",
+              "createdAt": "2025-04-25T11:27:58Z",
+              "updatedAt": "2025-04-25T12:27:35Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
