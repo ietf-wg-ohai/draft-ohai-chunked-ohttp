@@ -139,6 +139,7 @@ POST /request.example.net/proxy HTTP/1.1
 Host: proxy.example.org
 Content-Type: message/ohttp-chunked-req
 Incremental: ?1
+Transfer-Encoding: chunked
 
 <content is an Encapsulated Request>
 ~~~
