@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 27 October 2025                                         Mozilla
-                                                           25 April 2025
+Expires: 7 December 2025                                         Mozilla
+                                                             5 June 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 October 2025.
+   This Internet-Draft will expire on 7 December 2025.
 
 Copyright Notice
 
@@ -208,6 +208,7 @@ Table of Contents
    Host: proxy.example.org
    Content-Type: message/ohttp-chunked-req
    Incremental: ?1
+   Transfer-Encoding: chunked
 
    <content is an Encapsulated Request>
 
