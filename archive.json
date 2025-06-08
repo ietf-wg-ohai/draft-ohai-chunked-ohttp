@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-27T01:08:58.880164+00:00",
+  "timestamp": "2025-06-08T01:14:41.366852+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -1872,6 +1872,48 @@
               "updatedAt": "2025-04-25T12:27:35Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "id": "PR_kwDOJtaXUM6ZP8_E",
+      "title": "Add Transfer-Encoding to the example",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/40",
+      "state": "MERGED",
+      "author": "bemasc",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is required for compliance with RFC 9112, Section 6, which says\r\n\r\n> The presence of a message body in a request is signaled by a Content-Length or Transfer-Encoding header field.\r\n\r\nThe text notes that Content-Length would be unusual, so Transfer-Encoding must be the common case with HTTP/1.1.",
+      "createdAt": "2025-06-05T18:00:01Z",
+      "updatedAt": "2025-06-05T22:51:59Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "8bbd9e38522f88018b5d0e545b29c3c62903bfba",
+      "headRepository": "bemasc/draft-ohai-chunked-ohttp",
+      "headRefName": "patch-1",
+      "headRefOid": "5031ed76ff446618fc6d34e70d8c1d8944092da2",
+      "closedAt": "2025-06-05T22:51:59Z",
+      "mergedAt": "2025-06-05T22:51:59Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "27f71535accdc412a0a2d97d190d3c85f557e4e7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM6tBb5f",
+          "commit": {
+            "abbreviatedOid": "5031ed7"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Yeah, I usually skip all the framing garbage, because that avoids the implication of a specific version, but including the header seems especially relevant in this case.",
+          "createdAt": "2025-06-05T22:50:53Z",
+          "updatedAt": "2025-06-05T22:50:53Z",
+          "comments": []
         }
       ]
     }
