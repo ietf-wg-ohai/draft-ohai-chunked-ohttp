@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-08T01:14:41.366852+00:00",
+  "timestamp": "2025-06-15T01:16:23.454289+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -1914,6 +1914,53 @@
           "createdAt": "2025-06-05T22:50:53Z",
           "updatedAt": "2025-06-05T22:50:53Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "id": "PR_kwDOJtaXUM6aRe1H",
+      "title": "Interactivity and traffic analysis reveal",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/41",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-06-12T19:16:02Z",
+      "updatedAt": "2025-06-14T13:52:56Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "27f71535accdc412a0a2d97d190d3c85f557e4e7",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "rtt-ta",
+      "headRefOid": "6c2fb6ec634017da8d8a44a33aa16add54d2a234",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM6uizaS",
+          "commit": {
+            "abbreviatedOid": "6c2fb6e"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-14T13:52:52Z",
+          "updatedAt": "2025-06-14T13:52:56Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "I think it would still be good to explicitly call out that the Gateway is one entity that can learn the RTT, and then call out that other entities could learn that too",
+              "createdAt": "2025-06-14T13:52:52Z",
+              "updatedAt": "2025-06-14T13:52:56Z"
+            }
+          ]
         }
       ]
     }
