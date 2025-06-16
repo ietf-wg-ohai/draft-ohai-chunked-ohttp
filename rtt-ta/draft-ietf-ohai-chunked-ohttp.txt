@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 14 December 2025                                        Mozilla
-                                                            12 June 2025
+Expires: 18 December 2025                                        Mozilla
+                                                            16 June 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 December 2025.
+   This Internet-Draft will expire on 18 December 2025.
 
 Copyright Notice
 
@@ -468,8 +468,9 @@ Table of Contents
    the round trip time to the Client, which can change the privacy
    assumptions of the system.
 
-   Any interactivity also reveals the round-trip delay from a network
-   adversary (including the Oblivious Relay Resource) to the Client.
+   Any interactivity also allows a network adversary (including the
+   Oblivious Relay Resource) to measure the round-trip delay from
+   themselves to the Client.
 
    Client implementations therefore need to be aware of the possibility
    that interactively processing chunks might reveal round-trip time
