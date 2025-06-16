@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 7 December 2025                                         Mozilla
-                                                             5 June 2025
+Expires: 18 December 2025                                        Mozilla
+                                                            16 June 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 December 2025.
+   This Internet-Draft will expire on 18 December 2025.
 
 Copyright Notice
 
@@ -466,10 +466,15 @@ Table of Contents
 
    In the interactive case, the Oblivious Gateway Resource can observe
    the round trip time to the Client, which can change the privacy
-   assumptions of the system.  Client implementations therefore need to
-   be aware of the possibility that interactively processing chunks
-   might reveal information to the Oblivious Gateway Resource that is
-   otherwise kept private.
+   assumptions of the system.
+
+   Any interactivity also allows a network adversary (including the
+   Oblivious Relay Resource) to measure the round-trip delay from
+   themselves to the Client.
+
+   Client implementations therefore need to be aware of the possibility
+   that interactively processing chunks might reveal round-trip time
+   information that would be kept private in a non-interactive exchange.
 
    For cases when interactivity introduces unacceptable risks, the
    client can ensure that it never has an interactive exchange, either
@@ -713,7 +718,8 @@ Appendix A.  Example
 Acknowledgments
 
    Thanks to Chris Wood for helping build an initial test implementation
-   and providing reviews.
+   and providing reviews.  Thanks to Jonathan Hoyland for identifying
+   some of the privacy leaks.
 
 Authors' Addresses
 
