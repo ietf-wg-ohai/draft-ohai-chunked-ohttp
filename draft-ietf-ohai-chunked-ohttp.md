@@ -401,8 +401,8 @@ In the interactive case, the Oblivious Gateway Resource can
 observe the round trip time to the Client, which can change the privacy
 assumptions of the system.
 
-Any interactivity also reveals the round-trip delay from a network adversary
-(including the Oblivious Relay Resource) to the Client.
+Any interactivity also allows a network adversary (including the Oblivious Relay Resource)
+to measure the round-trip delay from themselves to the Client.
 
 Client implementations therefore need to be aware of the possibility that
 interactively processing chunks might reveal round-trip time information that
