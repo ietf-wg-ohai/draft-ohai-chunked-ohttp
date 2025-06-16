@@ -399,9 +399,14 @@ modalities for requests and responses:
 
 In the interactive case, the Oblivious Gateway Resource can
 observe the round trip time to the Client, which can change the privacy
-assumptions of the system. Client implementations therefore need to be aware
-of the possibility that interactively processing chunks might reveal information to the
-Oblivious Gateway Resource that is otherwise kept private.
+assumptions of the system.
+
+Any interactivity also allows a network adversary (including the Oblivious Relay Resource)
+to measure the round-trip delay from themselves to the Client.
+
+Client implementations therefore need to be aware of the possibility that
+interactively processing chunks might reveal round-trip time information that
+would be kept private in a non-interactive exchange.
 
 For cases when interactivity introduces unacceptable risks, the client can ensure that it never has an
 interactive exchange, either by not sending its request in multiple chunks, or
@@ -729,3 +734,4 @@ fead854635d2d5527d64f544
 {:numbered="false"}
 
 Thanks to Chris Wood for helping build an initial test implementation and providing reviews.
+Thanks to Jonathan Hoyland for identifying some of the privacy leaks.
