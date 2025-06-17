@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-15T01:16:23.454289+00:00",
+  "timestamp": "2025-06-17T01:09:15.813080+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -1922,24 +1922,26 @@
       "id": "PR_kwDOJtaXUM6aRe1H",
       "title": "Interactivity and traffic analysis reveal",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/41",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-06-12T19:16:02Z",
-      "updatedAt": "2025-06-14T13:52:56Z",
+      "updatedAt": "2025-06-16T21:41:05Z",
       "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
       "baseRefName": "main",
       "baseRefOid": "27f71535accdc412a0a2d97d190d3c85f557e4e7",
       "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
       "headRefName": "rtt-ta",
-      "headRefOid": "6c2fb6ec634017da8d8a44a33aa16add54d2a234",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "81eef219f22d4acbccacd5b30550c2c15cac888a",
+      "closedAt": "2025-06-16T21:40:55Z",
+      "mergedAt": "2025-06-16T21:40:55Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "d2a1579fa5e37de995f8a83ec912cf595cd88594"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1961,6 +1963,79 @@
               "updatedAt": "2025-06-14T13:52:56Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM6ust2F",
+          "commit": {
+            "abbreviatedOid": "6c2fb6e"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-16T07:39:38Z",
+          "updatedAt": "2025-06-16T07:39:38Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "Isn't that the previous paragraph?  Not following.\r\n\r\n(I think that the general observation is that any entity can discover the length of the loop from their point of observation to the client, which isn't generally possible with a non-interactive setup.)",
+              "createdAt": "2025-06-16T07:39:38Z",
+              "updatedAt": "2025-06-16T07:39:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM6uwfJ_",
+          "commit": {
+            "abbreviatedOid": "6c2fb6e"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-16T12:29:10Z",
+          "updatedAt": "2025-06-16T12:29:10Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "```suggestion\r\nAny interactivity also allows a network adversary (including the Oblivious Relay Resource)\r\nto measure the round-trip delay from themselves to the Client.\r\n```",
+              "createdAt": "2025-06-16T12:29:10Z",
+              "updatedAt": "2025-06-16T12:29:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM6uwf8a",
+          "commit": {
+            "abbreviatedOid": "6c2fb6e"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-06-16T12:30:18Z",
+          "updatedAt": "2025-06-16T12:30:18Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "Sorry, missed that context when reading on my phone.\r\n\r\nI think the thing I was missing here still (which I added a suggestion for) is who the RTT is revealed _to_; it's implicit that it's the attacker, but it sounded a bit awkwardly phrased. I've added the suggestion, but it's fine as-is too.",
+              "createdAt": "2025-06-16T12:30:18Z",
+              "updatedAt": "2025-06-16T12:30:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM6uwf-y",
+          "commit": {
+            "abbreviatedOid": "6c2fb6e"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-06-16T12:30:21Z",
+          "updatedAt": "2025-06-16T12:30:21Z",
+          "comments": []
         }
       ]
     }
