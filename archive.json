@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-17T01:09:15.813080+00:00",
+  "timestamp": "2025-06-19T01:09:23.926992+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -239,7 +239,7 @@
       "labels": [],
       "body": "Since the design is basically HPKE for requests and TLS record layer for responses, I wonder if the document would benefit from leaning on existing analyses for these things, and [this](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/08/191.pdf) in particular.",
       "createdAt": "2023-09-18T20:31:18Z",
-      "updatedAt": "2025-04-24T06:47:45Z",
+      "updatedAt": "2025-06-17T04:02:45Z",
       "closedAt": null,
       "comments": [
         {
@@ -248,6 +248,20 @@
           "body": "I don't really have the expertise (or time) to do that.  I will observe that there are some critical differences between this design and the TLS record layer analysis that might make this less obvious:\n\n1. Proofs of TLS won't have included undetectable truncation of the data stream at record boundaries.  TLS includes a stream termination signal, but it's not at the record layer and it is rarely used.  This design has an integral end-of-stream indicator that is (I believe) very hard to break.\n2. The TLS record layer has padding, which we don't use.\n3. The HPKE part has the same stream terminator design as the response piece.\n\nIntuitively at least, the padding thing would seem to simplify any analysis, but the stream termination would be somewhat new.  Either way, I'm not sure that an analysis would be anything other than a nice feature.",
           "createdAt": "2025-04-24T06:47:44Z",
           "updatedAt": "2025-04-24T06:47:44Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Out of curiosity, what's the plan for this now that the spec is in WGLC?",
+          "createdAt": "2025-06-17T03:40:11Z",
+          "updatedAt": "2025-06-17T03:40:11Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "See above: if you are not comfortable with the level of analysis done, flag it.  Either we'll end up looking for someone to do that work for some time, or we'll decide not to wait on it.",
+          "createdAt": "2025-06-17T04:02:44Z",
+          "updatedAt": "2025-06-17T04:02:44Z"
         }
       ]
     },
