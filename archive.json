@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-19T01:09:23.926992+00:00",
+  "timestamp": "2025-07-03T01:09:53.063912+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -232,15 +232,15 @@
       "id": "I_kwDOJtaXUM5xWYx1",
       "title": "Analysis",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chris-wood",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Since the design is basically HPKE for requests and TLS record layer for responses, I wonder if the document would benefit from leaning on existing analyses for these things, and [this](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/08/191.pdf) in particular.",
       "createdAt": "2023-09-18T20:31:18Z",
-      "updatedAt": "2025-06-17T04:02:45Z",
-      "closedAt": null,
+      "updatedAt": "2025-07-02T19:58:01Z",
+      "closedAt": "2025-07-02T19:58:01Z",
       "comments": [
         {
           "author": "martinthomson",
@@ -1666,21 +1666,21 @@
       "id": "PR_kwDOJtaXUM6HguDw",
       "title": "Add details on counter encoding",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/34",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "willemschots",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "First of all, thanks for the great work on this Draft RFC, it's been very useful so far!\r\n\r\nI've been working on implementing chunked responses and I would suggest to add a bit more detail on the counter encoding.\r\n\r\nIf I understand correctly, senders and receivers will need to use the same encoding to end up with the same `chunk_nonce`. To maintain compatibility between different implementations I think it would be good to have this encoding spelled out in the RFC.\r\n\r\nIn the PR I suggest we specify to use Big Endian encoding, but that's just to illustrate the level of detail I'm suggesting. If a different encoding is more appropriate, I'd be happy to make changes.\r\n\r\n",
       "createdAt": "2025-01-13T10:37:17Z",
-      "updatedAt": "2025-01-29T01:59:32Z",
+      "updatedAt": "2025-07-02T19:59:29Z",
       "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
       "baseRefName": "main",
       "baseRefOid": "03d98be2658f1b54b8da6cfd9e5f24e7a0815a36",
       "headRepository": "willemschots/draft-ohai-chunked-ohttp",
       "headRefName": "patch-1",
       "headRefOid": "6ad9f27d81713223dc6700f75e8b3962bf9c6533",
-      "closedAt": null,
+      "closedAt": "2025-07-02T19:59:29Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -1691,6 +1691,13 @@
           "body": "Top! Have included your suggested text, flows a bit better :+1: ",
           "createdAt": "2025-01-13T17:20:28Z",
           "updatedAt": "2025-01-13T17:20:28Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Proposing closing this",
+          "createdAt": "2025-07-02T19:59:29Z",
+          "updatedAt": "2025-07-02T19:59:29Z"
         }
       ],
       "reviews": [
