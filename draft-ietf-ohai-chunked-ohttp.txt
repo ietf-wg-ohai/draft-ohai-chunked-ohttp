@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 18 December 2025                                        Mozilla
-                                                            16 June 2025
+Expires: 10 January 2026                                         Mozilla
+                                                             9 July 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 December 2025.
+   This Internet-Draft will expire on 10 January 2026.
 
 Copyright Notice
 
@@ -242,7 +242,7 @@ Table of Contents
    }
 
    Chunked Request Chunks {
-     Non-Final Request Chunk (..),
+     Non-Final Request Chunk (..) ...,
      Final Request Chunk Indicator (i) = 0,
      HPKE-Protected Final Chunk (..),
    }
@@ -270,7 +270,7 @@ Table of Contents
    }
 
    Chunked Response Chunks {
-     Non-Final Response Chunk (..),
+     Non-Final Response Chunk (..) ...,
      Final Response Chunk Indicator (i) = 0,
      AEAD-Protected Final Response Chunk (..),
    }
@@ -361,7 +361,7 @@ Table of Contents
   aead_nonce = Expand(prk, "nonce", Nn)
 
    The sender also maintains a counter of chunks, which is set to 0 for
-   the first chunk an incremented by 1 after encoding each chunk.
+   the first chunk and incremented by 1 after encoding each chunk.
 
    counter = 0
 
