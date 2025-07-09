@@ -173,7 +173,7 @@ Chunked Request Header {
 }
 
 Chunked Request Chunks {
-  Non-Final Request Chunk (..),
+  Non-Final Request Chunk (..) ...,
   Final Request Chunk Indicator (i) = 0,
   HPKE-Protected Final Chunk (..),
 }
@@ -201,7 +201,7 @@ Chunked Encapsulated Response {
 }
 
 Chunked Response Chunks {
-  Non-Final Response Chunk (..),
+  Non-Final Response Chunk (..) ...,
   Final Response Chunk Indicator (i) = 0,
   AEAD-Protected Final Response Chunk (..),
 }
