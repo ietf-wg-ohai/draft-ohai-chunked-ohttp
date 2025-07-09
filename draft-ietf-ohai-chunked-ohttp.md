@@ -173,7 +173,7 @@ Chunked Request Header {
 }
 
 Chunked Request Chunks {
-  Non-Final Request Chunk (..),
+  Non-Final Request Chunk (..) ...,
   Final Request Chunk Indicator (i) = 0,
   HPKE-Protected Final Chunk (..),
 }
@@ -201,7 +201,7 @@ Chunked Encapsulated Response {
 }
 
 Chunked Response Chunks {
-  Non-Final Response Chunk (..),
+  Non-Final Response Chunk (..) ...,
   Final Response Chunk Indicator (i) = 0,
   AEAD-Protected Final Response Chunk (..),
 }
@@ -301,7 +301,7 @@ aead_nonce = Expand(prk, "nonce", Nn)
 ~~~
 
 The sender also maintains a counter of chunks, which is set to 0 for the first
-chunk an incremented by 1 after encoding each chunk.
+chunk and incremented by 1 after encoding each chunk.
 
 ~~~
 counter = 0
