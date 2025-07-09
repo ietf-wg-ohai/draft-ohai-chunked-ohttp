@@ -301,7 +301,7 @@ aead_nonce = Expand(prk, "nonce", Nn)
 ~~~
 
 The sender also maintains a counter of chunks, which is set to 0 for the first
-chunk an incremented by 1 after encoding each chunk.
+chunk and incremented by 1 after encoding each chunk.
 
 ~~~
 counter = 0
