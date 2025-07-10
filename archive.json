@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-03T01:09:53.063912+00:00",
+  "timestamp": "2025-07-10T01:11:03.919154+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -2056,6 +2056,61 @@
           "body": "",
           "createdAt": "2025-06-16T12:30:21Z",
           "updatedAt": "2025-06-16T12:30:21Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "id": "PR_kwDOJtaXUM6eKNsJ",
+      "title": "Use repeated field notation for non-final request/response chunk.",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/42",
+      "state": "MERGED",
+      "author": "Rickyp",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There can be 0 or more non-final request/response chunks",
+      "createdAt": "2025-07-09T17:00:34Z",
+      "updatedAt": "2025-07-09T23:05:03Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "d2a1579fa5e37de995f8a83ec912cf595cd88594",
+      "headRepository": "Rickyp/draft-ohai-chunked-ohttp",
+      "headRefName": "patch-1",
+      "headRefOid": "4912f25bd9a291662210d7cdd271da9113e058c3",
+      "closedAt": "2025-07-09T23:05:02Z",
+      "mergedAt": "2025-07-09T23:05:02Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "0b388e2c3b1883a1df6ce9f4514184af16bccd2e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM6y8-bt",
+          "commit": {
+            "abbreviatedOid": "a596f0b"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks Ricky!",
+          "createdAt": "2025-07-09T17:02:35Z",
+          "updatedAt": "2025-07-09T17:02:35Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJtaXUM6zA3iJ",
+          "commit": {
+            "abbreviatedOid": "4912f25"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks, this is good.  I had to double-check RFC 9292 to see if I hadn't made the same error there (thankfully not).",
+          "createdAt": "2025-07-09T23:04:10Z",
+          "updatedAt": "2025-07-09T23:04:10Z",
           "comments": []
         }
       ]
