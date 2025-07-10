@@ -735,3 +735,4 @@ fead854635d2d5527d64f544
 
 Thanks to Chris Wood for helping build an initial test implementation and providing reviews.
 Thanks to Jonathan Hoyland for identifying some of the privacy leaks.
+Thanks to Ricardo Perez and Ben Schwartz for helping find and fix issues in the document.
