@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-10T01:11:03.919154+00:00",
+  "timestamp": "2025-07-13T01:18:23.557821+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -2111,6 +2111,48 @@
           "body": "Thanks, this is good.  I had to double-check RFC 9292 to see if I hadn't made the same error there (thankfully not).",
           "createdAt": "2025-07-09T23:04:10Z",
           "updatedAt": "2025-07-09T23:04:10Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "id": "PR_kwDOJtaXUM6eTn0Q",
+      "title": "Update acknowledgements",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/43",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-10T13:18:06Z",
+      "updatedAt": "2025-07-10T21:13:06Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "0b388e2c3b1883a1df6ce9f4514184af16bccd2e",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "tfpauly-patch-8",
+      "headRefOid": "dbd10af1683e125c2657e3a8fc7deb2f8274d0c6",
+      "closedAt": "2025-07-10T21:13:06Z",
+      "mergedAt": "2025-07-10T21:13:06Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "9eb316e34f6efa644ecc3260d14f0a744235d530"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM6zOsOK",
+          "commit": {
+            "abbreviatedOid": "dbd10af"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-10T19:03:28Z",
+          "updatedAt": "2025-07-10T19:03:28Z",
           "comments": []
         }
       ]
