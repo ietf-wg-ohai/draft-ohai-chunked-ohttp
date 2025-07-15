@@ -144,7 +144,7 @@ Transfer-Encoding: chunked
 <content is an Encapsulated Request>
 ~~~
 
-Implementations MUST support receiving chunks that contain `2^14` (16384) octets
+Implementations MUST support receiving chunks that contain 2<sup>14</sup> (16384) octets
 of data prior to encapsulation. Senders of chunks SHOULD limit their chunks to
 this size, unless they are aware of support for larger sizes by the receiving
 party.
@@ -331,6 +331,8 @@ If the counter reached the maximum value that can be held in an
 integer with `Nn` bytes (that maximum being 256<sup>`Nn`</sup>), where `Nn` is the
 length of the AEAD nonce, the `chunk_nonce` would wrap and be reused.
 Therefore, the response MUST NOT use 256<sup>`Nn`</sup> or more chunks.
+However, this limit does not consider security margins; see {{sec-limits}}.
+
 
 # Security Considerations {#security}
 
@@ -423,6 +425,28 @@ Interactivity does not inherently reduce replay risk unless the server
 explicitly verifies that a client is live (such as by having the client echo
 content from the response in its request).  A request that is generated
 interactively can be replayed by a malicious relay.
+
+
+## Message Size Limits {#sec-limits}
+
+The security margins for many ciphers degrade
+as more data is protected.
+The total size of messages needs to be limited
+to limit the ability of an attacker to compromise cipher
+confidentiality and integrity.
+
+The multi-user analysis in {{Section 7 of !AEAD-LIMITS=I-D.irtf-cfrg-aead-limits}}
+describes a process for estimating limits on usage
+that maintain security margins.
+For instance, that analysis shows that to keep the Authenticated Encryption Advantage (AEA)
+for AEAD_AES_GCM_128 below 2<sup>-50</sup>,
+the total number of protected bytes for any given key below 2<sup>80</sup>,
+divided by the total number of protected bytes for any key.
+For a target advantage of 2<sup>-50</sup>,
+if an attacker might interact with 2<sup>20</sup> keys,
+messages can only include 2<sup>30</sup> bytes
+protected with AEAD_AES_GCM_128.
+
 
 # IANA Considerations
 
