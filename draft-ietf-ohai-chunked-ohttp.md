@@ -328,9 +328,9 @@ final_chunk = concat(varint_encode(0), sealed_final_chunk)
 ~~~
 
 If the counter reached the maximum value that can be held in an
-integer with `Nn` bytes (that maximum being `256^Nn`), where `Nn` is the
+integer with `Nn` bytes (that maximum being 256<sup>`Nn`</sup>), where `Nn` is the
 length of the AEAD nonce, the `chunk_nonce` would wrap and be reused.
-Therefore, the response MUST NOT use `256^Nn` or more chunks.
+Therefore, the response MUST NOT use 256<sup>`Nn`</sup> or more chunks.
 
 # Security Considerations {#security}
 
