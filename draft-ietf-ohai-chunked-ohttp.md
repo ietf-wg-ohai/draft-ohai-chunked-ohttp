@@ -334,7 +334,6 @@ Therefore, the response MUST NOT use 256<sup>`Nn`</sup> or more chunks.
 However, this limit does not consider security margins; see {{sec-limits}}.
 
 
-
 # Security Considerations {#security}
 
 In general, Chunked OHTTP inherits the same security considerations as Oblivious
