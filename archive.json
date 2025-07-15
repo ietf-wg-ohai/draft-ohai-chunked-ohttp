@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-13T01:18:23.557821+00:00",
+  "timestamp": "2025-07-15T01:15:01.395775+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -2156,6 +2156,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 44,
+      "id": "PR_kwDOJtaXUM6e2JsN",
+      "title": "Response chunk counter limit fix",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/44",
+      "state": "OPEN",
+      "author": "Rickyp",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The response chunk counter is encoded to `Nn`, which is the nonce length in bytes. This means that the encoded counter can support integer values that can fit in `Nn` bytes, so the `chunk_nonce` would wrap at 256^Nn.",
+      "createdAt": "2025-07-14T18:00:55Z",
+      "updatedAt": "2025-07-14T19:24:15Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "9eb316e34f6efa644ecc3260d14f0a744235d530",
+      "headRepository": "Rickyp/draft-ohai-chunked-ohttp",
+      "headRefName": "patch-2",
+      "headRefOid": "6b4e5758fe6eb7b8b610cce741177edecba7dabe",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
