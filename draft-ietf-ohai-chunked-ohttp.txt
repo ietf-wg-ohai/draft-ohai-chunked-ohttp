@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 11 January 2026                                         Mozilla
-                                                            10 July 2025
+Expires: 16 January 2026                                         Mozilla
+                                                            15 July 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 January 2026.
+   This Internet-Draft will expire on 16 January 2026.
 
 Copyright Notice
 
@@ -382,9 +382,9 @@ Table of Contents
    final_chunk = concat(varint_encode(0), sealed_final_chunk)
 
    If the counter reached the maximum value that can be held in an
-   integer with Nn bits (that maximum being 2^Nn), where Nn is the
+   integer with Nn bytes (that maximum being 256^Nn), where Nn is the
    length of the AEAD nonce, the chunk_nonce would wrap and be reused.
-   Therefore, the response MUST NOT use 2^Nn or more chunks.
+   Therefore, the response MUST NOT use 256^Nn or more chunks.
 
 7.  Security Considerations
 
