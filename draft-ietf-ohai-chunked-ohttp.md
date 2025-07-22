@@ -196,7 +196,7 @@ the chunk extends to the end of the outer stream.
 
 ~~~
 Chunked Encapsulated Response {
-  Response Nonce (Nk),
+  Response Nonce (8 * max(Nn, Nk)),
   Chunked Response Chunks (..),
 }
 
