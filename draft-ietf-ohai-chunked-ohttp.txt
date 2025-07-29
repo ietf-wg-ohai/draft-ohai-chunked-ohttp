@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 29 January 2026                                         Mozilla
-                                                            28 July 2025
+Expires: 30 January 2026                                         Mozilla
+                                                            29 July 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 January 2026.
+   This Internet-Draft will expire on 30 January 2026.
 
 Copyright Notice
 
@@ -83,6 +83,7 @@ Table of Contents
    7.  Security Considerations
      7.1.  Message Truncation
      7.2.  Interactivity and Privacy
+     7.3.  Message Size Limits
    8.  IANA Considerations
      8.1.  message/ohttp-chunked-req Media Type
      8.2.  message/ohttp-chunked-res Media Type
@@ -384,7 +385,8 @@ Table of Contents
    If the counter reached the maximum value that can be held in an
    integer with Nn bytes (that maximum being 256^Nn), where Nn is the
    length of the AEAD nonce, the chunk_nonce would wrap and be reused.
-   Therefore, the response MUST NOT use 256^Nn or more chunks.
+   Therefore, the response MUST NOT use 256^Nn or more chunks.  However,
+   this limit does not consider security margins; see Section 7.3.
 
 7.  Security Considerations
 
@@ -494,6 +496,23 @@ Table of Contents
    the client echo content from the response in its request).  A request
    that is generated interactively can be replayed by a malicious relay.
 
+7.3.  Message Size Limits
+
+   The security margins for many ciphers degrade as more data is
+   protected.  The total size of messages needs to be limited to limit
+   the ability of an attacker to compromise cipher confidentiality and
+   integrity.
+
+   The multi-user analysis in Section 7 of [AEAD-LIMITS] describes a
+   process for estimating limits on usage that maintain security
+   margins.  For instance, that analysis shows that to keep the
+   Authenticated Encryption Advantage (AEA) for AEAD_AES_GCM_128 below
+   2^-50, the total number of protected bytes for any given key below
+   2^80, divided by the total number of protected bytes for any key.
+   For a target advantage of 2^-50, if an attacker might interact with
+   2^20 keys, messages can only include 2^30 bytes protected with
+   AEAD_AES_GCM_128.
+
 8.  IANA Considerations
 
    This document updates the "Media Types" registry at
@@ -565,6 +584,13 @@ Table of Contents
 9.  References
 
 9.1.  Normative References
+
+   [AEAD-LIMITS]
+              Günther, F., Thomson, M., and C. A. Wood, "Usage Limits on
+              AEAD Algorithms", Work in Progress, Internet-Draft, draft-
+              irtf-cfrg-aead-limits-10, 8 April 2025,
+              <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
+              aead-limits-10>.
 
    [BHTTP]    Thomson, M. and C. A. Wood, "Binary Representation of HTTP
               Messages", RFC 9292, DOI 10.17487/RFC9292, August 2022,
