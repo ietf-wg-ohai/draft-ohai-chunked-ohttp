@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-24T01:13:49.956097+00:00",
+  "timestamp": "2025-07-29T01:22:22.459085+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -2237,7 +2237,7 @@
       "labels": [],
       "body": "AES-GCM isn't that great under a multi-user analysis here.  1GB messages aren't tiny, but they aren't exactly generous either (you can loosen the advantage; 2^-50 is somewhat arbitrary.  Still, ChaCha20Poly1305 starts looking a lot better by comparison.",
       "createdAt": "2025-07-15T09:44:11Z",
-      "updatedAt": "2025-07-15T09:50:34Z",
+      "updatedAt": "2025-07-28T15:31:44Z",
       "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
       "baseRefName": "main",
       "baseRefOid": "b9e2ea2995e272e060c454afae0fdc13f2d06883",
@@ -2249,33 +2249,63 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM62l5qc",
+          "commit": {
+            "abbreviatedOid": "8f6b6e0"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-28T15:31:44Z",
+          "updatedAt": "2025-07-28T15:31:44Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 46,
       "id": "PR_kwDOJtaXUM6gEZUY",
       "title": "Setting response nonce length",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/46",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "Rickyp",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Section 6.2 mentions that the response nonce length is the max between Nn and Nk.",
       "createdAt": "2025-07-22T13:06:08Z",
-      "updatedAt": "2025-07-22T16:29:20Z",
+      "updatedAt": "2025-07-28T07:56:38Z",
       "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
       "baseRefName": "main",
       "baseRefOid": "b9e2ea2995e272e060c454afae0fdc13f2d06883",
       "headRepository": "Rickyp/draft-ohai-chunked-ohttp",
       "headRefName": "patch-3",
       "headRefOid": "6e26df165eec6e20a603e6c53d2e685dc651b187",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-07-28T07:56:37Z",
+      "mergedAt": "2025-07-28T07:56:37Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "eabdb8478b6d22c80c7914319da0fcd596c3a1de"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM62c5dm",
+          "commit": {
+            "abbreviatedOid": "6e26df1"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-07-28T07:56:32Z",
+          "updatedAt": "2025-07-28T07:56:32Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 47,
@@ -2289,7 +2319,7 @@
       "labels": [],
       "body": "Just a nit. The term for the thing the client sends is \"encapsulated key\" not \"encapsulated shared secret\" (in fact, the shared secret is not equal to the thing you get when you decapsulate, but rather a hash of it with some other stuff)",
       "createdAt": "2025-07-23T17:17:19Z",
-      "updatedAt": "2025-07-23T17:17:20Z",
+      "updatedAt": "2025-07-28T15:32:55Z",
       "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
       "baseRefName": "main",
       "baseRefOid": "b9e2ea2995e272e060c454afae0fdc13f2d06883",
@@ -2300,7 +2330,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This terminology is taken from the main OHTTP RFC, see https://www.rfc-editor.org/rfc/rfc9458.html#name-request-format\r\n \r\n@martinthomson what are your thoughts here?",
+          "createdAt": "2025-07-28T15:32:55Z",
+          "updatedAt": "2025-07-28T15:32:55Z"
+        }
+      ],
       "reviews": []
     }
   ]
