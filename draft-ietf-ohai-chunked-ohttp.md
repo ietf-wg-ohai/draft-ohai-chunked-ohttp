@@ -123,7 +123,7 @@ with the non-chunked media type, a gateway could partition client anonymity
 sets by rejecting some requests and accepting others.
 
 Chunked OHTTP requests and responses SHOULD include the
-`Incremental` header field {{!INCREMENTAL=I-D.kazuho-httpbis-incremental-http}}
+`Incremental` header field {{!INCREMENTAL=I-D.ietf-httpbis-incremental}}
 in order to signal to intermediaries (such as the relay) that the content of
 the messages are intended to be delivered incrementally. Without this signal,
 intermediaries might buffer request or response body until complete, removing
