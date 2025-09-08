@@ -73,8 +73,8 @@ as described in {{Section 2.1 of OHTTP}}, and requires the use of a willing
 Oblivious Relay Resource and Oblivious Gateway Resource.
 
 Chunked Oblivious HTTP is intended to be used in cases for where the privacy
-properties of Oblivious HTTP are needed — specifically, removing linkage
-at the transport layer between separate HTTP requests — but incremental
+properties of Oblivious HTTP are needed -- specifically, removing linkage
+at the transport layer between separate HTTP requests -- but incremental
 processing is also needed for performance or functionality.
 
 One specific functional capability that requires chunked Oblivious HTTP
