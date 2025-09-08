@@ -135,9 +135,9 @@ Table of Contents
    Resource.
 
    Chunked Oblivious HTTP is intended to be used in cases for where the
-   privacy properties of Oblivious HTTP are needed — specifically,
+   privacy properties of Oblivious HTTP are needed -- specifically,
    removing linkage at the transport layer between separate HTTP
-   requests — but incremental processing is also needed for performance
+   requests -- but incremental processing is also needed for performance
    or functionality.
 
    One specific functional capability that requires chunked Oblivious
