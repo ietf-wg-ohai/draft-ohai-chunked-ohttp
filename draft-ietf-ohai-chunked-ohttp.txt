@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 30 January 2026                                         Mozilla
-                                                            29 July 2025
+Expires: 12 March 2026                                           Mozilla
+                                                        8 September 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 January 2026.
+   This Internet-Draft will expire on 12 March 2026.
 
 Copyright Notice
 
@@ -602,10 +602,10 @@ Table of Contents
 
    [INCREMENTAL]
               Oku, K., Pauly, T., and M. Thomson, "Incremental HTTP
-              Messages", Work in Progress, Internet-Draft, draft-kazuho-
-              httpbis-incremental-http-00, 15 October 2024,
-              <https://datatracker.ietf.org/doc/html/draft-kazuho-
-              httpbis-incremental-http-00>.
+              Messages", Work in Progress, Internet-Draft, draft-ietf-
+              httpbis-incremental-00, 29 April 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
+              incremental-00>.
 
    [OHTTP]    Thomson, M. and C. A. Wood, "Oblivious HTTP", RFC 9458,
               DOI 10.17487/RFC9458, January 2024,
