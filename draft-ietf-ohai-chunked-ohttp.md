@@ -29,6 +29,14 @@ author:
     organization: Mozilla
     email: mt@lowentropy.net
 
+informative:
+  RFC9112:
+    display: HTTP/1.1
+  RFC9113:
+    display: HTTP/2
+  RFC9114:
+    display: HTTP/3
+
 --- abstract
 
 This document defines a variant of the Oblivious HTTP message format that allows
@@ -66,7 +74,8 @@ This document defines an optional message format for Oblivious HTTP that support
 progressive creation and processing of both requests and responses. New media types are
 defined for this purpose.
 
-## Applicability
+
+## Applicability {#applicability}
 
 Like the non-chunked variant, chunked Oblivious HTTP has limited applicability
 as described in {{Section 2.1 of OHTTP}}, and requires the use of a willing
@@ -101,19 +110,21 @@ Chunked Oblivious HTTP is not intended to be used for long-lived sessions
 between clients and servers that might build up state, or as a replacement
 for a proxied TLS session.
 
+
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
 Notational conventions from {{OHTTP}} are used in this document.
 
+
 # Chunked Requests and Responses
 
-Chunked Oblivious HTTP defines different media than the non-chunked variant. These
-media types are "message/ohttp-chunked-req" (defined in {{iana-req}}) and
-"message/ohttp-chunked-res" (defined in {{iana-res}}). If a request uses the
-media type "message/ohttp-chunked-req", a successful corresponding response
-MUST use the media type "message/ohttp-chunked-res".
+Chunked Oblivious HTTP defines different media types than the non-chunked variant.
+These media types are "message/ohttp-chunked-req" (defined in {{iana-req}})
+and "message/ohttp-chunked-res" (defined in {{iana-res}}).
+If a request uses the media type "message/ohttp-chunked-req",
+a successful corresponding response MUST use the media type "message/ohttp-chunked-res".
 
 Use cases that require the use of Chunked OHTTP SHOULD only use the chunked
 media types for their requests, to indicate that Chunked OHTTP is required.
@@ -149,14 +160,20 @@ of data prior to encapsulation. Senders of chunks SHOULD limit their chunks to
 this size, unless they are aware of support for larger sizes by the receiving
 party.
 
+
 # Request Format {#request}
 
 Chunked OHTTP requests start with the same header as used for the non-chunked variant,
 which consists of a key ID, algorithm IDs, and the KEM shared secret. This header is
 followed by chunks of data protected with HPKE, each of which is preceded by a
 variable-length integer (as defined in {{Section 16 of !QUIC=RFC9000}})
-that indicates the length of the chunk. The final chunk is preceded by a length
-field with the value 0, which means the chunk extends to the end of the outer stream.
+that indicates the length of the chunk.
+
+The final chunk is preceded by a length field with the value 0,
+which means the chunk extends to the end of the outer stream.
+This format relies on its length being indicated
+by the protocol that carries the message;
+for HTTP, the final chunk ends at the end of the HTTP message content.
 
 ~~~
 Chunked Encapsulated Request {
@@ -187,12 +204,15 @@ Non-Final Request Chunk {
 
 The content of the HPKE-protected chunks is defined in {{request-encap}}.
 
+
 # Response Format {#response}
 
 Chunked OHTTP responses start with a nonce, followed by chunks of data protected with
 an AEAD. Each chunk is preceded by a variable-length integer that indicates the length
-of the chunk. The final chunk is preceded by a length field with the value 0, which means
-the chunk extends to the end of the outer stream.
+of the chunk.
+
+The final chunk is preceded by a length field with the value 0,
+which means the chunk extends to the end of the outer stream.
 
 ~~~
 Chunked Encapsulated Response {
@@ -213,11 +233,12 @@ Non-Final Response Chunk {
 ~~~
 {: #fig-enc-response title="Chunked Encapsulated Response Format"}
 
+
 # Encapsulation of Chunks
 
 The encapsulation of chunked Oblivious HTTP requests and responses uses
 the same approach as the non-chunked variant, with the difference that
-the body of requests and responses are sealed and opened in chunks, instead
+the bodies of requests and responses are sealed and opened in chunks, instead
 of as a whole.
 
 The AEAD that protects both requests and responses protects individual chunks from
@@ -225,7 +246,7 @@ modification or truncation. Additionally, chunk authentication protects two othe
 pieces of information:
 
 1. the order of the chunks (the sequence number of each chunk), which is
-included in the nonce of each chunk.
+   included in the nonce of each chunk.
 1. which chunk is the final chunk, which is indicated by a sentinel
    in the Additional Authenticated Data (AAD)
    of the final chunk.
@@ -236,6 +257,17 @@ transported by alternative means, and still be valid as long as the order and
 finality are preserved.  In particular, the variable-length encoding used for lengths
 allows for different expressions of the same value, where the choice between
 equivalent encodings is not authenticated.
+
+When translating from an HTTP message that is already divided into chunks --
+such as the chunked transfer coding in HTTP/1.1
+({{Section 7.1 of RFC9112}})
+or DATA frames in HTTP/2 or HTTP/3
+({{Section 6.1 of RFC9113}} and {{Section 7.2.1 of RFC9114}}) --
+there is no expectation that any chunks align.
+As noted in {{applicability}},
+the chunking of the encapsulated binary HTTP message
+and the binary HTTP message do not need to be aligned.
+
 
 ## Request Encapsulation {#request-encap}
 
@@ -350,6 +382,7 @@ under the same consistency privacy considerations as the rest of the configurati
 Chunked OHTTP to the non-chunked variant if they are configured to used chunking.
 Falling back would allow clients to have inconsistent behavior that could be used to partition client anonymity sets.
 
+
 ## Message Truncation
 
 The primary advantage of a chunked encoding is that chunked requests or responses can
@@ -368,6 +401,7 @@ understood and accepted. Conversely, endpoints that depend on having a complete
 message MUST ensure that they do not consider a message complete until having
 received a chunk with a 0-valued length prefix, which was successfully decrypted
 using the expected sentinel value, "final", in the AAD.
+
 
 ## Interactivity and Privacy
 
@@ -435,16 +469,15 @@ The total size of messages needs to be limited
 to limit the ability of an attacker to compromise cipher
 confidentiality and integrity.
 
-The multi-user analysis in {{Section 7 of !AEAD-LIMITS=I-D.irtf-cfrg-aead-limits}}
+The multi-user analysis in {{Section 6 of !AEAD-LIMITS=I-D.irtf-cfrg-aead-limits}}
 describes a process for estimating limits on usage
 that maintain security margins.
 For instance, that analysis shows that to keep the Authenticated Encryption Advantage (AEA)
 for AEAD_AES_GCM_128 below 2<sup>-50</sup>,
-the total number of protected bytes for any given key below 2<sup>80</sup>,
-divided by the total number of protected bytes for any key.
-For a target advantage of 2<sup>-50</sup>,
-if an attacker might interact with 2<sup>20</sup> keys,
-messages can only include 2<sup>30</sup> bytes
+the total number of bytes protected by a key can be kept below 2<sup>80</sup>,
+divided by the total number of bytes protected by any key.
+Therefore, for a target advantage of 2<sup>-50</sup>,
+no message can exceed 2<sup>40</sup> bytes
 protected with AEAD_AES_GCM_128.
 
 
