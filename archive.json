@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-31T01:14:56.108701+00:00",
+  "timestamp": "2025-09-23T01:01:14.149382+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -2349,6 +2349,48 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 48,
+      "id": "PR_kwDOJtaXUM6pu2y5",
+      "title": "AD review feedback",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/48",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-09-22T01:39:59Z",
+      "updatedAt": "2025-09-22T02:56:11Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "115b6aa25f530d8feb87013685564ee071d7ab6c",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "ad-review",
+      "headRefOid": "80e1c6cc2a1391d5967fa243d6bede60dae9dcc9",
+      "closedAt": "2025-09-22T02:56:11Z",
+      "mergedAt": "2025-09-22T02:56:11Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "df766f39d6e72cbcf22235ff77155fbee1626bfa"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7Bu8bf",
+          "commit": {
+            "abbreviatedOid": "80e1c6c"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-09-22T01:50:18Z",
+          "updatedAt": "2025-09-22T01:50:18Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
