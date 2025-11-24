@@ -296,8 +296,8 @@ sealed_chunk_len = varint_encode(len(sealed_chunk))
 non_final_chunk = concat(sealed_chunk_len, sealed_chunk)
 ~~~
 
-The final chunk in a request uses an AAD of the string "final" and is prefixed
-with a zero length.
+The final chunk in a request uses an AAD of the string "final" (0x66696e616c)
+and is prefixed with a zero length.
 
 ~~~
 sealed_final_chunk = sctxt.Seal("final", chunk)
