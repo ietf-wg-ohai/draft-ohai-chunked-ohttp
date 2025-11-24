@@ -234,7 +234,7 @@ Non-Final Response Chunk {
 {: #fig-enc-response title="Chunked Encapsulated Response Format"}
 
 
-# Encapsulation of Chunks
+# Encapsulation of Chunks {#chunks}
 
 The encapsulation of chunked Oblivious HTTP requests and responses uses
 the same approach as the non-chunked variant, with the difference that
@@ -462,6 +462,15 @@ interactively can be replayed by a malicious relay.
 
 
 ## Message Size Limits {#sec-limits}
+
+The use of most AEAD ciphers is subject to a per-ciphertext size limit.
+For this format, this limit applies to each chunk
+and is determined by the `C_MAX` parameter of the AEAD;
+see {{!AEAD=RFC5116}}.
+There is also a limit on the total number of chunks,
+which is 256<sup>Nn</sup>.
+Limits on chunk size and count are hard limits
+that apply to both request and response.
 
 The security margins for many ciphers degrade
 as more data is protected.
