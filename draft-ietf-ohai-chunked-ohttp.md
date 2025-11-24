@@ -481,6 +481,19 @@ no message can exceed 2<sup>40</sup> bytes
 protected with AEAD_AES_GCM_128.
 
 
+## Zero-Length Chunks
+
+A malicious sender can construct a chunked encapsulation
+that requires the recipient expend pointless effort on decryption,
+without transmitting any data.
+
+There is no significant reason to transmit empty chunks,
+other than the final chunk.
+An implemention could choose to abort a request
+if the number of empty chunks received
+exceed an implementation-determined limit.
+
+
 # IANA Considerations
 
 This document updates the "Media Types" registry at
