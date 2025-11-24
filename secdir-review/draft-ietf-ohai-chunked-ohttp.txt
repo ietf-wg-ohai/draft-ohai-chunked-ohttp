@@ -779,8 +779,8 @@ Acknowledgments
 
    Thanks to Chris Wood for helping build an initial test implementation
    and providing reviews.  Thanks to Jonathan Hoyland for identifying
-   some of the privacy leaks.  Thanks to Ricardo Perez and Ben Schwartz
-   for helping find and fix issues in the document.
+   some of the privacy leaks.  Thanks to Ricardo Perez, Derrell Piper,
+   and Ben Schwartz for helping find and fix issues in the document.
 
 Authors' Addresses
 
