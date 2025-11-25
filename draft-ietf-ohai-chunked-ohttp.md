@@ -463,15 +463,6 @@ interactively can be replayed by a malicious relay.
 
 ## Message Size Limits {#sec-limits}
 
-The use of most AEAD ciphers is subject to a per-ciphertext size limit.
-For this format, this limit applies to each chunk
-and is determined by the `C_MAX` parameter of the AEAD;
-see {{!AEAD=RFC5116}}.
-There is also a limit on the total number of chunks,
-which is 256<sup>Nn</sup>.
-Limits on chunk size and count are hard limits
-that apply to both request and response.
-
 The security margins for many ciphers degrade
 as more data is protected.
 The total size of messages needs to be limited
@@ -488,6 +479,15 @@ divided by the total number of bytes protected by any key.
 Therefore, for a target advantage of 2<sup>-50</sup>,
 no message can exceed 2<sup>40</sup> bytes
 protected with AEAD_AES_GCM_128.
+
+The use of most AEAD ciphers is subject to a hard limit on ciphertext length.
+For this format, this limit applies to each chunk
+and is determined by the `C_MAX` parameter of the AEAD;
+see {{!AEAD=RFC5116}}.
+AEAD ciphers also have a hard limit on the total number of chunks,
+which is 256<sup>Nn</sup>.
+These hard Limits on chunk size and count
+apply to both request and response.
 
 
 # IANA Considerations
