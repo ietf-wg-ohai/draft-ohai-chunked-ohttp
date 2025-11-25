@@ -234,7 +234,7 @@ Non-Final Response Chunk {
 {: #fig-enc-response title="Chunked Encapsulated Response Format"}
 
 
-# Encapsulation of Chunks
+# Encapsulation of Chunks {#chunks}
 
 The encapsulation of chunked Oblivious HTTP requests and responses uses
 the same approach as the non-chunked variant, with the difference that
@@ -296,8 +296,8 @@ sealed_chunk_len = varint_encode(len(sealed_chunk))
 non_final_chunk = concat(sealed_chunk_len, sealed_chunk)
 ~~~
 
-The final chunk in a request uses an AAD of the string "final" and is prefixed
-with a zero length.
+The final chunk in a request uses an AAD of the ASCII string "final" (0x66696e616c)
+and is prefixed with a zero length.
 
 ~~~
 sealed_final_chunk = sctxt.Seal("final", chunk)
@@ -479,6 +479,15 @@ divided by the total number of bytes protected by any key.
 Therefore, for a target advantage of 2<sup>-50</sup>,
 no message can exceed 2<sup>40</sup> bytes
 protected with AEAD_AES_GCM_128.
+
+The use of most AEAD ciphers is subject to a hard limit on ciphertext length.
+For this format, this limit applies to each chunk
+and is determined by the `C_MAX` parameter of the AEAD;
+see {{!AEAD=RFC5116}}.
+AEAD ciphers also have a hard limit on the total number of chunks,
+which is 256<sup>Nn</sup>.
+These hard Limits on chunk size and count
+apply to both request and response.
 
 
 # IANA Considerations
@@ -792,4 +801,4 @@ fead854635d2d5527d64f544
 
 Thanks to Chris Wood for helping build an initial test implementation and providing reviews.
 Thanks to Jonathan Hoyland for identifying some of the privacy leaks.
-Thanks to Ricardo Perez and Ben Schwartz for helping find and fix issues in the document.
+Thanks to Ricardo Perez, Derrell Piper, and Ben Schwartz for helping find and fix issues in the document.
