@@ -186,7 +186,7 @@ Chunked Request Header {
   HPKE KEM ID (16),
   HPKE KDF ID (16),
   HPKE AEAD ID (16),
-  Encapsulated KEM Shared Secret (8 * Nenc),
+  KEM Encapsulated Key (8 * Nenc),
 }
 
 Chunked Request Chunks {
