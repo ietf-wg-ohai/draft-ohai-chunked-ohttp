@@ -268,6 +268,11 @@ As noted in {{applicability}},
 the chunking of the encapsulated binary HTTP message
 and the binary HTTP message do not need to be aligned.
 
+A non-final chunk MUST NOT contain a zero-length plaintext.
+A receiver MUST treat the receipt of a chunk that contains no data
+as equivalent to a decryption error,
+unless that chunk is the final chunk.
+
 
 ## Request Encapsulation {#request-encap}
 
