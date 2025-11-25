@@ -1438,7 +1438,7 @@ Non-Final Response Chunk {
 </div>
 </section>
 </div>
-<div id="encapsulation-of-chunks">
+<div id="chunks">
 <section id="section-6">
       <h2 id="name-encapsulation-of-chunks">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-encapsulation-of-chunks" class="section-name selfRef">Encapsulation of Chunks</a>
@@ -1506,8 +1506,8 @@ sealed_chunk_len = varint_encode(len(sealed_chunk))
 non_final_chunk = concat(sealed_chunk_len, sealed_chunk)
 </pre><a href="#section-6.1-4" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1-5">The final chunk in a request uses an AAD of the string "final" and is prefixed
-with a zero length.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+<p id="section-6.1-5">The final chunk in a request uses an AAD of the ASCII string "final" (0x66696e616c)
+and is prefixed with a zero length.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.1-6">
 <pre>
 sealed_final_chunk = sctxt.Seal("final", chunk)
@@ -1703,6 +1703,14 @@ divided by the total number of bytes protected by any key.
 Therefore, for a target advantage of 2<sup>-50</sup>,
 no message can exceed 2<sup>40</sup> bytes
 protected with AEAD_AES_GCM_128.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<p id="section-7.3-3">The use of most AEAD ciphers is subject to a hard limit on ciphertext length.
+For this format, this limit applies to each chunk
+and is determined by the <code>C_MAX</code> parameter of the AEAD;
+see <span>[<a href="#AEAD" class="cite xref">AEAD</a>]</span>.
+AEAD ciphers also have a hard limit on the total number of chunks,
+which is 256<sup>Nn</sup>.
+These hard Limits on chunk size and count
+apply to both request and response.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1950,6 +1958,10 @@ identify encapsulated binary HTTP responses that are incrementally generated or 
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="AEAD">[AEAD]</dt>
+        <dd>
+<span class="refAuthor">McGrew, D.</span>, <span class="refTitle">"An Interface and Algorithms for Authenticated Encryption"</span>, <span class="seriesInfo">RFC 5116</span>, <span class="seriesInfo">DOI 10.17487/RFC5116</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5116">https://www.rfc-editor.org/rfc/rfc5116</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="AEAD-LIMITS">[AEAD-LIMITS]</dt>
         <dd>
 <span class="refAuthor">Günther, F.</span>, <span class="refAuthor">Thomson, M.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Usage Limits on AEAD Algorithms"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-aead-limits-10</span>, <time datetime="2025-04-08" class="refDate">8 April 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-10">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-10</a>&gt;</span>. </dd>
@@ -2159,7 +2171,7 @@ fead854635d2d5527d64f544
       </h2>
 <p id="appendix-B-1">Thanks to Chris Wood for helping build an initial test implementation and providing reviews.
 Thanks to Jonathan Hoyland for identifying some of the privacy leaks.
-Thanks to Ricardo Perez and Ben Schwartz for helping find and fix issues in the document.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+Thanks to Ricardo Perez, Derrell Piper, and Ben Schwartz for helping find and fix issues in the document.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">

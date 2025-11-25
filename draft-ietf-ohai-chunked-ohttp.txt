@@ -344,8 +344,8 @@ Table of Contents
    sealed_chunk_len = varint_encode(len(sealed_chunk))
    non_final_chunk = concat(sealed_chunk_len, sealed_chunk)
 
-   The final chunk in a request uses an AAD of the string "final" and is
-   prefixed with a zero length.
+   The final chunk in a request uses an AAD of the ASCII string "final"
+   (0x66696e616c) and is prefixed with a zero length.
 
    sealed_final_chunk = sctxt.Seal("final", chunk)
    final_chunk = concat(varint_encode(0), sealed_final_chunk)
@@ -525,6 +525,13 @@ Table of Contents
    Therefore, for a target advantage of 2^-50, no message can exceed
    2^40 bytes protected with AEAD_AES_GCM_128.
 
+   The use of most AEAD ciphers is subject to a hard limit on ciphertext
+   length.  For this format, this limit applies to each chunk and is
+   determined by the C_MAX parameter of the AEAD; see [AEAD].  AEAD
+   ciphers also have a hard limit on the total number of chunks, which
+   is 256^Nn.  These hard Limits on chunk size and count apply to both
+   request and response.
+
 8.  IANA Considerations
 
    This document updates the "Media Types" registry at
@@ -596,6 +603,10 @@ Table of Contents
 9.  References
 
 9.1.  Normative References
+
+   [AEAD]     McGrew, D., "An Interface and Algorithms for Authenticated
+              Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
+              <https://www.rfc-editor.org/rfc/rfc5116>.
 
    [AEAD-LIMITS]
               Günther, F., Thomson, M., and C. A. Wood, "Usage Limits on
@@ -768,8 +779,8 @@ Acknowledgments
 
    Thanks to Chris Wood for helping build an initial test implementation
    and providing reviews.  Thanks to Jonathan Hoyland for identifying
-   some of the privacy leaks.  Thanks to Ricardo Perez and Ben Schwartz
-   for helping find and fix issues in the document.
+   some of the privacy leaks.  Thanks to Ricardo Perez, Derrell Piper,
+   and Ben Schwartz for helping find and fix issues in the document.
 
 Authors' Addresses
 
