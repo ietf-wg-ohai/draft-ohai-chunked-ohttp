@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 28 May 2026                                             Mozilla
-                                                        24 November 2025
+Expires: 29 May 2026                                             Mozilla
+                                                        25 November 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 May 2026.
+   This Internet-Draft will expire on 29 May 2026.
 
 Copyright Notice
 
@@ -344,7 +344,7 @@ Table of Contents
    sealed_chunk_len = varint_encode(len(sealed_chunk))
    non_final_chunk = concat(sealed_chunk_len, sealed_chunk)
 
-   The final chunk in a request uses an AAD of the string "final"
+   The final chunk in a request uses an AAD of the ASCII string "final"
    (0x66696e616c) and is prefixed with a zero length.
 
    sealed_final_chunk = sctxt.Seal("final", chunk)
