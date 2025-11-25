@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 26 March 2026                                           Mozilla
-                                                       22 September 2025
+Expires: 29 May 2026                                             Mozilla
+                                                        25 November 2025
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 March 2026.
+   This Internet-Draft will expire on 29 May 2026.
 
 Copyright Notice
 
@@ -243,7 +243,7 @@ Table of Contents
      HPKE KEM ID (16),
      HPKE KDF ID (16),
      HPKE AEAD ID (16),
-     Encapsulated KEM Shared Secret (8 * Nenc),
+     KEM Encapsulated Key (8 * Nenc),
    }
 
    Chunked Request Chunks {
@@ -613,11 +613,11 @@ Table of Contents
               February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
 
    [INCREMENTAL]
-              Oku, K., Pauly, T., and M. Thomson, "Incremental HTTP
-              Messages", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-incremental-00, 29 April 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
-              incremental-00>.
+              Oku, K., Pauly, T., and M. Thomson, "Incremental
+              Forwarding of HTTP Messages", Work in Progress, Internet-
+              Draft, draft-ietf-httpbis-incremental-03, 12 November
+              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              httpbis-incremental-03>.
 
    [OHTTP]    Thomson, M. and C. A. Wood, "Oblivious HTTP", RFC 9458,
               DOI 10.17487/RFC9458, January 2024,
