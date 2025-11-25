@@ -1688,20 +1688,12 @@ interactively can be replayed by a malicious relay.<a href="#section-7.2-9" clas
         <h3 id="name-message-size-limits">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-message-size-limits" class="section-name selfRef">Message Size Limits</a>
         </h3>
-<p id="section-7.3-1">The use of most AEAD ciphers is subject to a per-ciphertext size limit.
-For this format, this limit applies to each chunk
-and is determined by the <code>C_MAX</code> parameter of the AEAD;
-see <span>[<a href="#AEAD" class="cite xref">AEAD</a>]</span>.
-There is also a limit on the total number of chunks,
-which is 256<sup>Nn</sup>.
-Limits on chunk size and count are hard limits
-that apply to both request and response.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<p id="section-7.3-2">The security margins for many ciphers degrade
+<p id="section-7.3-1">The security margins for many ciphers degrade
 as more data is protected.
 The total size of messages needs to be limited
 to limit the ability of an attacker to compromise cipher
-confidentiality and integrity.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
-<p id="section-7.3-3">The multi-user analysis in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-10#section-6" class="relref">Section 6</a> of [<a href="#AEAD-LIMITS" class="cite xref">AEAD-LIMITS</a>]</span>
+confidentiality and integrity.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">The multi-user analysis in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-10#section-6" class="relref">Section 6</a> of [<a href="#AEAD-LIMITS" class="cite xref">AEAD-LIMITS</a>]</span>
 describes a process for estimating limits on usage
 that maintain security margins.
 For instance, that analysis shows that to keep the Authenticated Encryption Advantage (AEA)
@@ -1710,7 +1702,15 @@ the total number of bytes protected by a key can be kept below 2<sup>80</sup>,
 divided by the total number of bytes protected by any key.
 Therefore, for a target advantage of 2<sup>-50</sup>,
 no message can exceed 2<sup>40</sup> bytes
-protected with AEAD_AES_GCM_128.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
+protected with AEAD_AES_GCM_128.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<p id="section-7.3-3">The use of most AEAD ciphers is subject to a hard limit on ciphertext length.
+For this format, this limit applies to each chunk
+and is determined by the <code>C_MAX</code> parameter of the AEAD;
+see <span>[<a href="#AEAD" class="cite xref">AEAD</a>]</span>.
+AEAD ciphers also have a hard limit on the total number of chunks,
+which is 256<sup>Nn</sup>.
+These hard Limits on chunk size and count
+apply to both request and response.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
