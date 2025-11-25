@@ -309,6 +309,11 @@ the context, so the order of chunks is protected. HPKE will produce an
 error if the sequence number overflows, which puts a limit on the number
 of chunks that can be sent in a request.
 
+If the sender of the request is about to reach the maximum number of chunks,
+and can send an application-level error (such as trailer fields in a
+Binary HTTP message), the sender SHOULD send such error indications
+in the last allowed chunk.
+
 ## Response Encapsulation {#response-encap}
 
 For responses, the first piece of data sent back is the response nonce,
@@ -364,6 +369,11 @@ integer with `Nn` bytes (that maximum being 256<sup>`Nn`</sup>), where `Nn` is t
 length of the AEAD nonce, the `chunk_nonce` would wrap and be reused.
 Therefore, the response MUST NOT use 256<sup>`Nn`</sup> or more chunks.
 However, this limit does not consider security margins; see {{sec-limits}}.
+
+If the sender of the response is about to reach the maximum number of chunks,
+and can send an application-level error (such as trailer fields in a
+Binary HTTP message), the sender SHOULD send such error indications
+in the last allowed chunk.
 
 
 # Security Considerations {#security}
