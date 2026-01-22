@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 29 May 2026                                             Mozilla
-                                                        25 November 2025
+Expires: 26 July 2026                                            Mozilla
+                                                         22 January 2026
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,11 +53,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 May 2026.
+   This Internet-Draft will expire on 26 July 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -320,6 +320,11 @@ Table of Contents
    no expectation that any chunks align.  As noted in Section 1.1, the
    chunking of the encapsulated binary HTTP message and the binary HTTP
    message do not need to be aligned.
+
+   A non-final chunk MUST NOT contain a zero-length plaintext.  A
+   receiver MUST treat the receipt of a chunk that contains no data as
+   equivalent to a decryption error, unless that chunk is the final
+   chunk.
 
 6.1.  Request Encapsulation
 
@@ -611,9 +616,9 @@ Table of Contents
    [AEAD-LIMITS]
               Günther, F., Thomson, M., and C. A. Wood, "Usage Limits on
               AEAD Algorithms", Work in Progress, Internet-Draft, draft-
-              irtf-cfrg-aead-limits-10, 8 April 2025,
+              irtf-cfrg-aead-limits-11, 4 December 2025,
               <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
-              aead-limits-10>.
+              aead-limits-11>.
 
    [BHTTP]    Thomson, M. and C. A. Wood, "Binary Representation of HTTP
               Messages", RFC 9292, DOI 10.17487/RFC9292, August 2022,
