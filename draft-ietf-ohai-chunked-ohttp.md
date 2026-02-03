@@ -134,11 +134,16 @@ with the non-chunked media type, a gateway could partition client anonymity
 sets by rejecting some requests and accepting others.
 
 Chunked OHTTP requests and responses SHOULD include the
-`Incremental` header field {{!INCREMENTAL=I-D.ietf-httpbis-incremental}}
-in order to signal to intermediaries (such as the relay) that the content of
+`Incremental` header field set to `?1` {{!INCREMENTAL=I-D.ietf-httpbis-incremental}}.
+This signals to intermediaries -- the relay in particular -- that the content of
 the messages are intended to be delivered incrementally. Without this signal,
-intermediaries might buffer request or response body until complete, removing
-the benefits of using Chunked OHTTP.
+intermediaries might buffer request or response body until complete,
+removing some of the benefits of using Chunked OHTTP.
+
+Incremental processing of messages does not always
+require incremental forwarding in the network.
+An endpoint might reasonably omit the `Incremental` header field
+if it only wants to support incremental processing of a complete message.
 
 Chunked OHTTP messages generally will not include a `Content-Length` header field,
 since the complete length of all chunks might not be known ahead of time.
