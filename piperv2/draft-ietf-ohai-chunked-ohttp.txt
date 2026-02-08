@@ -497,7 +497,7 @@ Table of Contents
 
    Interactivity SHOULD be avoided.  Where interactivity is a desirable
    property, a documented analysis of why the resulting reduction in
-   privacy is not necessary for that specific interactive application.
+   privacy is acceptable for that specific interactive application.
 
    For cases when interactivity introduces unacceptable risks, the
    client can ensure that it never has an interactive exchange, either
