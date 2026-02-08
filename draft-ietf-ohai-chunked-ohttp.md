@@ -452,7 +452,7 @@ to measure the round-trip delay from themselves to the Client.
 Interactivity SHOULD be avoided.
 Where interactivity is a desirable property,
 a documented analysis
-of why the resulting reduction in privacy is not necessary
+of why the resulting reduction in privacy is acceptable
 for that specific interactive application.
 
 For cases when interactivity introduces unacceptable risks, the client can ensure that it never has an
