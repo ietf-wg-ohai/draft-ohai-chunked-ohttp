@@ -449,7 +449,10 @@ assumptions of the system.
 Any interactivity also allows a network adversary (including the Oblivious Relay Resource)
 to measure the round-trip delay from themselves to the Client.
 
-Interactivity SHOULD be avoided.
+Applications that require interactivity SHOULD avoid using chunked OHTTP
+and instead leverage protocols without the shortcomings of Oblivious HTTP.
+One example is combining TLS {{?TLS=RFC8446}} and the HTTP CONNECT
+method {{Section 9.3.6 of ?RFC9110}}.
 Where interactivity is a desirable property,
 a documented analysis
 of why the resulting reduction in privacy is acceptable
