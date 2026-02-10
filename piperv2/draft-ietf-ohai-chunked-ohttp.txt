@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 12 August 2026                                          Mozilla
-                                                         8 February 2026
+Expires: 14 August 2026                                          Mozilla
+                                                        10 February 2026
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 August 2026.
+   This Internet-Draft will expire on 14 August 2026.
 
 Copyright Notice
 
@@ -495,9 +495,13 @@ Table of Contents
    Oblivious Relay Resource) to measure the round-trip delay from
    themselves to the Client.
 
-   Interactivity SHOULD be avoided.  Where interactivity is a desirable
-   property, a documented analysis of why the resulting reduction in
-   privacy is acceptable for that specific interactive application.
+   Applications that require interactivity SHOULD avoid using chunked
+   OHTTP and instead leverage protocols without the shortcomings of
+   Oblivious HTTP.  One example is combining TLS [TLS] and the HTTP
+   CONNECT method Section 9.3.6 of [RFC9110].  Where interactivity is a
+   desirable property, a documented analysis of why the resulting
+   reduction in privacy is acceptable for that specific interactive
+   application.
 
    For cases when interactivity introduces unacceptable risks, the
    client can ensure that it never has an interactive exchange, either
@@ -684,6 +688,15 @@ Table of Contents
 
    [HTTP/3]   Bishop, M., Ed., "HTTP/3", RFC 9114, DOI 10.17487/RFC9114,
               June 2022, <https://www.rfc-editor.org/rfc/rfc9114>.
+
+   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Semantics", STD 97, RFC 9110,
+              DOI 10.17487/RFC9110, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9110>.
+
+   [TLS]      Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
 
 Appendix A.  Example
 
