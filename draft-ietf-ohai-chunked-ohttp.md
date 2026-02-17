@@ -141,11 +141,16 @@ with the non-chunked media type, a gateway could partition client anonymity
 sets by rejecting some requests and accepting others.
 
 Chunked OHTTP requests and responses SHOULD include the
-`Incremental` header field {{!INCREMENTAL=I-D.ietf-httpbis-incremental}}
-in order to signal to intermediaries (such as the relay) that the content of
+`Incremental` header field set to `?1` {{!INCREMENTAL=I-D.ietf-httpbis-incremental}}.
+This signals to intermediaries -- the relay in particular -- that the content of
 the messages are intended to be delivered incrementally. Without this signal,
-intermediaries might buffer request or response body until complete, removing
-the benefits of using Chunked OHTTP.
+intermediaries might buffer request or response body until complete,
+removing some of the benefits of using Chunked OHTTP.
+
+Incremental processing of messages does not always
+require incremental forwarding in the network.
+An endpoint might reasonably omit the `Incremental` header field
+if it only wants to support incremental processing of a complete message.
 
 Chunked OHTTP messages generally will not include a `Content-Length` header field,
 since the complete length of all chunks might not be known ahead of time.
@@ -401,12 +406,16 @@ The primary advantage of a chunked encoding is that chunked requests or response
 be generated or processed incrementally.  However, for a recipient in particular,
 processing an incomplete message can have security consequences.
 
+Truncation might be the result of interference at the network layer,
+or by a malicious Oblivious Relay Resource.
+
 The potential for message truncation is not a new concern for HTTP.  All versions of
 HTTP provide incremental delivery of messages.  For this use of Oblivious HTTP,
 incremental processing that might result in side-effects demands particular attention
-as Oblivious HTTP does not provide strong protection against replay attacks; see
-{{Section 6.5 of OHTTP}}.  Truncation might be the result of interference at the
-network layer, or by a malicious Oblivious Relay Resource.
+as Oblivious HTTP does not provide strong protection against replay attacks;
+see {{Section 6.5 of OHTTP}}.
+The risks from replay of incremental processing are
+in addition to the risks from replaying entire messages.
 
 Endpoints that receive chunked messages can perform early processing if the risks are
 understood and accepted. Conversely, endpoints that depend on having a complete
@@ -452,9 +461,14 @@ assumptions of the system.
 Any interactivity also allows a network adversary (including the Oblivious Relay Resource)
 to measure the round-trip delay from themselves to the Client.
 
-Client implementations therefore need to be aware of the possibility that
-interactively processing chunks might reveal round-trip time information that
-would be kept private in a non-interactive exchange.
+Applications that require interactivity SHOULD avoid using chunked OHTTP
+and instead leverage protocols without the shortcomings of Oblivious HTTP.
+One example is combining TLS {{?TLS=RFC8446}} and the HTTP CONNECT
+method {{Section 9.3.6 of ?RFC9110}}.
+Where interactivity is a desirable property,
+producing an analysis that explains why
+the resulting reduction in privacy is acceptable
+for that specific interactive application is recommended.
 
 For cases when interactivity introduces unacceptable risks, the client can ensure that it never has an
 interactive exchange, either by not sending its request in multiple chunks, or
@@ -481,16 +495,23 @@ The total size of messages needs to be limited
 to limit the ability of an attacker to compromise cipher
 confidentiality and integrity.
 
-The multi-user analysis in {{Section 6 of !AEAD-LIMITS=I-D.irtf-cfrg-aead-limits}}
+The multi-user analysis in {{Section 7 of !AEAD-LIMITS=I-D.irtf-cfrg-aead-limits}}
 describes a process for estimating limits on usage
 that maintain security margins.
 For instance, that analysis shows that to keep the Authenticated Encryption Advantage (AEA)
 for AEAD_AES_GCM_128 below 2<sup>-50</sup>,
 the total number of bytes protected by a key can be kept below 2<sup>80</sup>,
 divided by the total number of bytes protected by any key.
-Therefore, for a target advantage of 2<sup>-50</sup>,
-no message can exceed 2<sup>40</sup> bytes
-protected with AEAD_AES_GCM_128.
+Therefore, for AEAD_AES_GCM_128 and a target advantage of 2<sup>-50</sup>,
+and a limit on the number of messages of 2<sup>20</sup>,
+no message can exceed 2<sup>30</sup> bytes.
+
+{:aside}
+> Note that for these limits for AEAD_AES_GCM_128,
+> reducing the chunk size can increase the number of messages or message size.
+> Halving the chunk size doubles
+> either the number of messages
+> or the total message size.
 
 The use of most AEAD ciphers is subject to a hard limit on ciphertext length.
 For this format, this limit applies to each chunk
@@ -498,7 +519,7 @@ and is determined by the `C_MAX` parameter of the AEAD;
 see {{!AEAD=RFC5116}}.
 AEAD ciphers also have a hard limit on the total number of chunks,
 which is 256<sup>Nn</sup>.
-These hard Limits on chunk size and count
+These hard limits on chunk size and count
 apply to both request and response.
 
 
