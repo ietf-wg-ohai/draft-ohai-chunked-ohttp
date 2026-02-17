@@ -5,8 +5,8 @@
 OHAI Working Group                                              T. Pauly
 Internet-Draft                                                     Apple
 Intended status: Standards Track                              M. Thomson
-Expires: 26 July 2026                                            Mozilla
-                                                         22 January 2026
+Expires: 21 August 2026                                          Mozilla
+                                                        17 February 2026
 
 
                     Chunked Oblivious HTTP Messages
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 July 2026.
+   This Internet-Draft will expire on 21 August 2026.
 
 Copyright Notice
 
@@ -193,11 +193,16 @@ Table of Contents
    some requests and accepting others.
 
    Chunked OHTTP requests and responses SHOULD include the Incremental
-   header field [INCREMENTAL] in order to signal to intermediaries (such
-   as the relay) that the content of the messages are intended to be
-   delivered incrementally.  Without this signal, intermediaries might
-   buffer request or response body until complete, removing the benefits
-   of using Chunked OHTTP.
+   header field set to ?1 [INCREMENTAL].  This signals to intermediaries
+   -- the relay in particular -- that the content of the messages are
+   intended to be delivered incrementally.  Without this signal,
+   intermediaries might buffer request or response body until complete,
+   removing some of the benefits of using Chunked OHTTP.
+
+   Incremental processing of messages does not always require
+   incremental forwarding in the network.  An endpoint might reasonably
+   omit the Incremental header field if it only wants to support
+   incremental processing of a complete message.
 
    Chunked OHTTP messages generally will not include a Content-Length
    header field, since the complete length of all chunks might not be
