@@ -1322,9 +1322,10 @@ If a request uses the media type "message/ohttp-chunked-req",
 a successful corresponding response <span class="bcp14">MUST</span> use the media type "message/ohttp-chunked-res".<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">Chunked Oblivious HTTP requests are defined to contain Binary HTTP requests
 in either Known- or Indeterminate-Length form;
-responses contain Binary HTTP responses; see <span>[<a href="#BHTTP" class="cite xref">BHTTP</a>]</span>. As with non-chunked Oblivious HTTP, the encapsulation format
-of chunked Oblivious HTTP can be repurposed for other media types;
-see <span><a href="https://rfc-editor.org/rfc/rfc9458#section-4.6" class="relref">Section 4.6</a> of [<a href="#OHTTP" class="cite xref">OHTTP</a>]</span>.<a href="#section-3-2" class="pilcrow">¶</a></p>
+responses contain Binary HTTP responses; see <span>[<a href="#BHTTP" class="cite xref">BHTTP</a>]</span>.
+As with non-chunked Oblivious HTTP,
+the encapsulation format of chunked Oblivious HTTP can be repurposed
+for other media types; see <span><a href="https://rfc-editor.org/rfc/rfc9458#section-4.6" class="relref">Section 4.6</a> of [<a href="#OHTTP" class="cite xref">OHTTP</a>]</span>.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">Use cases that require the use of Chunked OHTTP <span class="bcp14">SHOULD</span> only use the chunked
 media types for their requests, to indicate that Chunked OHTTP is required.
 If the gateway unexpectedly does not support Chunked OHTTP, then the request
@@ -1332,15 +1333,19 @@ will fail as if OHTTP as a whole were not supported. If clients retry requests
 with the non-chunked media type, a gateway could partition client anonymity
 sets by rejecting some requests and accepting others.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <p id="section-3-4">Chunked OHTTP requests and responses <span class="bcp14">SHOULD</span> include the
-<code>Incremental</code> header field <span>[<a href="#INCREMENTAL" class="cite xref">INCREMENTAL</a>]</span>
-in order to signal to intermediaries (such as the relay) that the content of
+<code>Incremental</code> header field set to <code>?1</code> <span>[<a href="#INCREMENTAL" class="cite xref">INCREMENTAL</a>]</span>.
+This signals to intermediaries -- the relay in particular -- that the content of
 the messages are intended to be delivered incrementally. Without this signal,
-intermediaries might buffer request or response body until complete, removing
-the benefits of using Chunked OHTTP.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">Chunked OHTTP messages generally will not include a <code>Content-Length</code> header field,
-since the complete length of all chunks might not be known ahead of time.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">For example, a Chunked OHTTP request could look like the following:<a href="#section-3-6" class="pilcrow">¶</a></p>
-<div class="lang-http-message sourcecode" id="section-3-7">
+intermediaries might buffer request or response body until complete,
+removing some of the benefits of using Chunked OHTTP.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">Incremental processing of messages does not always
+require incremental forwarding in the network.
+An endpoint might reasonably omit the <code>Incremental</code> header field
+if it only wants to support incremental processing of a complete message.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Chunked OHTTP messages generally will not include a <code>Content-Length</code> header field,
+since the complete length of all chunks might not be known ahead of time.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">For example, a Chunked OHTTP request could look like the following:<a href="#section-3-7" class="pilcrow">¶</a></p>
+<div class="lang-http-message sourcecode" id="section-3-8">
 <pre>
 POST /request.example.net/proxy HTTP/1.1
 Host: proxy.example.org
@@ -1349,12 +1354,12 @@ Incremental: ?1
 Transfer-Encoding: chunked
 
 &lt;content is an Encapsulated Request&gt;
-</pre><a href="#section-3-7" class="pilcrow">¶</a>
+</pre><a href="#section-3-8" class="pilcrow">¶</a>
 </div>
-<p id="section-3-8">Implementations <span class="bcp14">MUST</span> support receiving chunks that contain 2<sup>14</sup> (16384) octets
+<p id="section-3-9">Implementations <span class="bcp14">MUST</span> support receiving chunks that contain 2<sup>14</sup> (16384) octets
 of data prior to encapsulation. Senders of chunks <span class="bcp14">SHOULD</span> limit their chunks to
 this size, unless they are aware of support for larger sizes by the receiving
-party.<a href="#section-3-8" class="pilcrow">¶</a></p>
+party.<a href="#section-3-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="request">
@@ -1618,17 +1623,20 @@ Falling back would allow clients to have inconsistent behavior that could be use
 <p id="section-7.1-1">The primary advantage of a chunked encoding is that chunked requests or responses can
 be generated or processed incrementally.  However, for a recipient in particular,
 processing an incomplete message can have security consequences.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">The potential for message truncation is not a new concern for HTTP.  All versions of
+<p id="section-7.1-2">Truncation might be the result of interference at the network layer,
+or by a malicious Oblivious Relay Resource.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.1-3">The potential for message truncation is not a new concern for HTTP.  All versions of
 HTTP provide incremental delivery of messages.  For this use of Oblivious HTTP,
 incremental processing that might result in side-effects demands particular attention
-as Oblivious HTTP does not provide strong protection against replay attacks; see
-<span><a href="https://rfc-editor.org/rfc/rfc9458#section-6.5" class="relref">Section 6.5</a> of [<a href="#OHTTP" class="cite xref">OHTTP</a>]</span>.  Truncation might be the result of interference at the
-network layer, or by a malicious Oblivious Relay Resource.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.1-3">Endpoints that receive chunked messages can perform early processing if the risks are
+as Oblivious HTTP does not provide strong protection against replay attacks;
+see <span><a href="https://rfc-editor.org/rfc/rfc9458#section-6.5" class="relref">Section 6.5</a> of [<a href="#OHTTP" class="cite xref">OHTTP</a>]</span>.
+The risks from replay of incremental processing are
+in addition to the risks from replaying entire messages.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1-4">Endpoints that receive chunked messages can perform early processing if the risks are
 understood and accepted. Conversely, endpoints that depend on having a complete
 message <span class="bcp14">MUST</span> ensure that they do not consider a message complete until having
 received a chunk with a 0-valued length prefix, which was successfully decrypted
-using the expected sentinel value, "final", in the AAD.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+using the expected sentinel value, "final", in the AAD.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="interactivity-and-privacy">
@@ -1676,9 +1684,14 @@ observe the round trip time to the Client, which can change the privacy
 assumptions of the system.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
 <p id="section-7.2-5">Any interactivity also allows a network adversary (including the Oblivious Relay Resource)
 to measure the round-trip delay from themselves to the Client.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
-<p id="section-7.2-6">Client implementations therefore need to be aware of the possibility that
-interactively processing chunks might reveal round-trip time information that
-would be kept private in a non-interactive exchange.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
+<p id="section-7.2-6">Applications that require interactivity <span class="bcp14">SHOULD</span> avoid using chunked OHTTP
+and instead leverage protocols without the shortcomings of Oblivious HTTP.
+One example is combining TLS <span>[<a href="#TLS" class="cite xref">TLS</a>]</span> and the HTTP CONNECT
+method <span><a href="https://rfc-editor.org/rfc/rfc9110#section-9.3.6" class="relref">Section 9.3.6</a> of [<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>.
+Where interactivity is a desirable property,
+producing an analysis that explains why
+the resulting reduction in privacy is acceptable
+for that specific interactive application is recommended.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
 <p id="section-7.2-7">For cases when interactivity introduces unacceptable risks, the client can ensure that it never has an
 interactive exchange, either by not sending its request in multiple chunks, or
 by ensuring that the sending of request chunks cannot be influenced by the response.<a href="#section-7.2-7" class="pilcrow">¶</a></p>
@@ -1704,24 +1717,31 @@ as more data is protected.
 The total size of messages needs to be limited
 to limit the ability of an attacker to compromise cipher
 confidentiality and integrity.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<p id="section-7.3-2">The multi-user analysis in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-11#section-6" class="relref">Section 6</a> of [<a href="#AEAD-LIMITS" class="cite xref">AEAD-LIMITS</a>]</span>
+<p id="section-7.3-2">The multi-user analysis in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-11#section-7" class="relref">Section 7</a> of [<a href="#AEAD-LIMITS" class="cite xref">AEAD-LIMITS</a>]</span>
 describes a process for estimating limits on usage
 that maintain security margins.
 For instance, that analysis shows that to keep the Authenticated Encryption Advantage (AEA)
 for AEAD_AES_GCM_128 below 2<sup>-50</sup>,
 the total number of bytes protected by a key can be kept below 2<sup>80</sup>,
 divided by the total number of bytes protected by any key.
-Therefore, for a target advantage of 2<sup>-50</sup>,
-no message can exceed 2<sup>40</sup> bytes
-protected with AEAD_AES_GCM_128.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
-<p id="section-7.3-3">The use of most AEAD ciphers is subject to a hard limit on ciphertext length.
+Therefore, for AEAD_AES_GCM_128 and a target advantage of 2<sup>-50</sup>,
+and a limit on the number of messages of 2<sup>20</sup>,
+no message can exceed 2<sup>30</sup> bytes.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<aside id="section-7.3-3">
+          <p id="section-7.3-3.1">Note that for these limits for AEAD_AES_GCM_128,
+reducing the chunk size can increase the number of messages or message size.
+Halving the chunk size doubles
+either the number of messages
+or the total message size.<a href="#section-7.3-3.1" class="pilcrow">¶</a></p>
+</aside>
+<p id="section-7.3-4">The use of most AEAD ciphers is subject to a hard limit on ciphertext length.
 For this format, this limit applies to each chunk
 and is determined by the <code>C_MAX</code> parameter of the AEAD;
 see <span>[<a href="#AEAD" class="cite xref">AEAD</a>]</span>.
 AEAD ciphers also have a hard limit on the total number of chunks,
 which is 256<sup>Nn</sup>.
-These hard Limits on chunk size and count
-apply to both request and response.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
+These hard limits on chunk size and count
+apply to both request and response.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2031,8 +2051,16 @@ identify encapsulated binary HTTP responses that are incrementally generated or 
 <span class="refAuthor">Thomson, M., Ed.</span> and <span class="refAuthor">C. Benfield, Ed.</span>, <span class="refTitle">"HTTP/2"</span>, <span class="seriesInfo">RFC 9113</span>, <span class="seriesInfo">DOI 10.17487/RFC9113</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9113">https://www.rfc-editor.org/rfc/rfc9113</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9114">[HTTP/3]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bishop, M., Ed.</span>, <span class="refTitle">"HTTP/3"</span>, <span class="seriesInfo">RFC 9114</span>, <span class="seriesInfo">DOI 10.17487/RFC9114</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9114">https://www.rfc-editor.org/rfc/rfc9114</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9110">[RFC9110]</dt>
+        <dd>
+<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9110">https://www.rfc-editor.org/rfc/rfc9110</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TLS">[TLS]</dt>
+      <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
