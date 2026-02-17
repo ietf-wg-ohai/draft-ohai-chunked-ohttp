@@ -188,7 +188,7 @@ Table of Contents
    requests in either Known- or Indeterminate-Length form; responses
    contain Binary HTTP responses; see [BHTTP].  As with non-chunked
    Oblivious HTTP, the encapsulation format of chunked Oblivious HTTP
-   can be repurposed for other media types.  See Section 4.6 of [OHTTP].
+   can be repurposed for other media types; see Section 4.6 of [OHTTP].
 
    Use cases that require the use of Chunked OHTTP SHOULD only use the
    chunked media types for their requests, to indicate that Chunked
