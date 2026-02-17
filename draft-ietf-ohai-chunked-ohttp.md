@@ -129,7 +129,7 @@ a successful corresponding response MUST use the media type "message/ohttp-chunk
 Chunked Oblivious HTTP requests are defined to contain Binary HTTP requests
 in either Known- or Indeterminate-Length form;
 responses contain Binary HTTP responses; see {{!BHTTP}}.
-As with non-chunked Oblivious HTTP, 
+As with non-chunked Oblivious HTTP,
 the encapsulation format of chunked Oblivious HTTP can be repurposed
 for other media types; see {{Section 4.6 of OHTTP}}.
 
