@@ -126,6 +126,13 @@ and "message/ohttp-chunked-res" (defined in {{iana-res}}).
 If a request uses the media type "message/ohttp-chunked-req",
 a successful corresponding response MUST use the media type "message/ohttp-chunked-res".
 
+Chunked Oblivious HTTP requests are defined to contain Binary HTTP requests
+in either Known- or Indeterminate-Length form;
+responses contain Binary HTTP responses; see {{!BHTTP}}.
+As with non-chunked Oblivious HTTP,
+the encapsulation format of chunked Oblivious HTTP can be repurposed
+for other media types; see {{Section 4.6 of OHTTP}}.
+
 Use cases that require the use of Chunked OHTTP SHOULD only use the chunked
 media types for their requests, to indicate that Chunked OHTTP is required.
 If the gateway unexpectedly does not support Chunked OHTTP, then the request
