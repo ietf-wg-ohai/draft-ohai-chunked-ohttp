@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-23T01:01:14.149382+00:00",
+  "timestamp": "2026-02-19T01:16:43.075179+00:00",
   "repo": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
   "labels": [
     {
@@ -612,6 +612,136 @@
           "body": "Similar to #36, I think it would make sense to add text to make clear that these are orthogonal. Having senders align chunks is fine, but we want to avoid a lazy receiver relying on that.",
           "createdAt": "2025-04-24T01:16:58Z",
           "updatedAt": "2025-04-24T01:16:58Z"
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "id": "I_kwDOJtaXUM7aYQqR",
+      "title": "Maximum chunk count errors vs final chunk signaling",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/51",
+      "state": "OPEN",
+      "author": "tfpauly",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://ietf-wg-ohai.github.io/draft-ohai-chunked-ohttp/draft-ietf-ohai-chunked-ohttp.html#section-6.2-11 explains:\n\n> If the counter reached the maximum value that can be held in an integer with Nn bytes (that maximum being 256Nn), where Nn is the length of the AEAD nonce, the chunk_nonce would wrap and be reused. Therefore, the response MUST NOT use 256Nn or more chunks. However, this limit does not consider security margins; see [Section 7.3](https://ietf-wg-ohai.github.io/draft-ohai-chunked-ohttp/draft-ietf-ohai-chunked-ohttp.html#sec-limits).[\u00b6](https://ietf-wg-ohai.github.io/draft-ohai-chunked-ohttp/draft-ietf-ohai-chunked-ohttp.html#section-6.2-11)\n\nHPKE itself takes care of limits for requests:\n\n> HPKE already maintains a sequence number for sealing operations as part of the context, so the order of chunks is protected. HPKE will produce an error if the sequence number overflows, which puts a limit on the number of chunks that can be sent in a request.[\u00b6](https://ietf-wg-ohai.github.io/draft-ohai-chunked-ohttp/draft-ietf-ohai-chunked-ohttp.html#section-6.1-7)\n\n@chris-wood brought up a question of how to handle signaling errors if these limits are reached. If a sender is going to hit a limit and be unable to send more chunks, they lose the ability to send secure signals to the peer (such as putting trailers in BHTTP to explain that an error condition was hit).\n\nOne solution is to recommend that if the sender is about to hit the limit of number of chunks, it SHOULD stop at least one before the limit to allow sending an application-level error in a final chunk.",
+      "createdAt": "2025-11-25T16:36:34Z",
+      "updatedAt": "2025-11-26T23:42:27Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm not sure that I agree with the sentiment.  A limit is something you seek to avoid for this sort of thing.  An application that can't stay within limits probably should be using something else, like MASQUE.\n\nIf this happened, I would probably do something different, which is to reset the associated stream. That is, ABORT!\n\nThat would look like a truncation error to the peer, which is something that any peer should probably handle gracefully.  They are processing a lot to get to that point, so if they aren't doing incremental processing with a way to manage possible truncation, I'd be disappointed (though not surprised).\n\nIn practice, the limits we care about are soft, so you don't need to worry about going one chunk over if you really do hit limits.  The risk that an attack is successful increases constantly as you send more data, so another chunk probably won't hurt if that's your choice.  I still wouldn't bother.",
+          "createdAt": "2025-11-25T23:45:14Z",
+          "updatedAt": "2025-11-25T23:45:14Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The situation here isn't limited (heh) to hitting the AEAD limits. It's also possible, for whatever reason, the gateway starts failing to encapsulate. Maybe it loses state, maybe the process crashes, who knows. (The latter is a more interesting scenario that is also not documented, I think?) In any case, I think it's probably a mistake to assume a perfectly infallible sequence of chunked encapsulations, so I'm not sure aborting is the right answer here. ",
+          "createdAt": "2025-11-26T02:18:09Z",
+          "updatedAt": "2025-11-26T02:18:09Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I agree with @martinthomson that the limits and numbers of chunks in practice are far lower, so I'd be happy to do nothing here as well. \n\n@chris-wood what other reasons would there be for failing to encapsulate? If state was lost so fully it seems like it couldn't reliably send anything back so that wouldn't apply?",
+          "createdAt": "2025-11-26T02:35:21Z",
+          "updatedAt": "2025-11-26T02:35:21Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Moving my suggestion from the PR to here. I agree that a normative recommendation might be too strong. Perhaps adding the following would be enough:\n\n<<Note that once one of the limits is hit, the sender loses the ability to send application data to the peer. If the sender wishes to securely inform its peer of this error condition (for example by using HTTP trailer fields), it needs to trigger this before reaching the limit.>>",
+          "createdAt": "2025-11-26T16:50:31Z",
+          "updatedAt": "2025-11-26T16:50:31Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "My concern is that the point at which you absolutely cannot send again is so far beyond anything reasonable AND safe usage limits, this is pretty irrelevant.\n\nI'm almost of the view that any discussion about hard limits is a distraction when the softer ones are what matters.",
+          "createdAt": "2025-11-26T21:07:07Z",
+          "updatedAt": "2025-11-26T21:07:07Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think the limits are a distraction from the more general problem here, which is: what happens when the gateway fails to encapsulate and send a chunk? Hitting the limit was just an easy way to demonstrate the edge case. Other ways are mentioned above. Yet another case is when perhaps the relay<>gateway connection is interrupted, which could happen if the connection is long lived. \n\nTo some extent this is just the HTTP truncation problem, wherein both the relay and client should deal with that however they deem appropriate. That said, I think it's more nuanced than what the current truncation text provides. I also think it's reasonable to not provide any normative text describing what to do here in any case. However, I think failing to discuss the ways in which this problem can manifest does the reader a disservice. (This question exists because someone didn't know the answer to the text!) As an example, let's say the gateway fails to encap and then aborts. Does the relay also abort its client connection, or does the relay close the stream, or something else? Again, I don't think you need to say precisely what happens, but merely providing an example of how this situation can manifest in practice might service future implementers.",
+          "createdAt": "2025-11-26T23:42:27Z",
+          "updatedAt": "2025-11-26T23:42:27Z"
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "id": "I_kwDOJtaXUM7acyjy",
+      "title": "A better design",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/54",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There's nothing new, and the basic idea here is one that we've seen before.\n\nI recently discovered https://eprint.iacr.org/2015/189.pdf which has a superior design in one tiny way.  Rather than signaling the final chunk through the AAD, which adds one extra invocation of the authenticator for that final chunk, rather than construct the nonce like this:\n\n```\nnonce = nonce_base ^ encode(Nn, counter)\n```\n\nYou can encode the per-chunk nonce as:\n\n```\nnonce = nonce_base ^ encode(Nn, counter << 1 | is_final)\n```\n\nThe cost is that you get to send half as many chunks before nonce rollover.  That's still 2^95 chunks of at least one byte each, which is far greater than any safe limit on usage.\n\nI'm going to close this issue immediately, but it's worth noting the idea, in case we need to take another swing.",
+      "createdAt": "2025-11-25T23:39:21Z",
+      "updatedAt": "2026-02-18T21:40:17Z",
+      "closedAt": "2026-02-18T21:40:17Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This approach turns out to be impractical without some rather fundamental changes to HPKE, so it is (currently) moot.",
+          "createdAt": "2026-02-18T21:40:17Z",
+          "updatedAt": "2026-02-18T21:40:17Z"
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "id": "I_kwDOJtaXUM7nxf3y",
+      "title": "Explain SHOULD on Incremental header field",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/55",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Mohamed Boucadair asks:\n\n> I have some comments about this part:\n>\n>    Chunked OHTTP requests and responses SHOULD include the Incremental\n>    header field [INCREMENTAL] in order to signal to intermediaries (such\n>    as the relay) that the content of the messages are intended to be\n>    delivered incrementally.  Without this signal, intermediaries might\n>    buffer request or response body until complete, removing the benefits\n>    of using Chunked OHTTP.\n>\n> * If there are cases where it is envisioned that the Client (or Relay Resource)\n> can be aware that Relay Resource (or Gateway Resource) will by default forward\n> chunks incrementally, then call that as an exception to this SHOULD.\n> * Absent such exceptions, and given that the benefits might be nullified in the\n> absence of the header, why isn\u2019t this a MUST?\n\nI think that it might be worth noting that the chunked format enables incremental processing, which only sometimes depends on incremental forwarding.  Incremental forwarding is about bounding the delay imposed by incomplete messages, so it might not always be necessary.",
+      "createdAt": "2026-02-03T01:48:07Z",
+      "updatedAt": "2026-02-17T21:45:38Z",
+      "closedAt": "2026-02-17T21:45:38Z",
+      "comments": []
+    },
+    {
+      "number": 57,
+      "id": "I_kwDOJtaXUM7oyXVY",
+      "title": "Chunked OHTTP and Known-Length Binary HTTP Messages",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/issues/57",
+      "state": "CLOSED",
+      "author": "DavidSchinazi",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We recently had an interop failure between two implementations of draft-ietf-ohai-chunked-ohttp because one of them assumed that `message/ohttp-chunked-req` meant using the Indeterminate-Length Binary HTTP Messages, while the other implementation sent Known-Length Binary HTTP Messages inside chunked OHTTP. Please clarify in the draft whether this is allowed.\n\nI'll note in passing that RFC 9458 failed to specify whether it is legal or not to send Indeterminate-Length Binary HTTP Messages in regular non-chunked OHTTP.  The diagrams like [fig 3](https://www.ietf.org/rfc/rfc9458.html#figure-3) and [fig 5](https://www.ietf.org/rfc/rfc9458.html#figure-5) reference the term `Binary HTTP Message` without defining it; and that term is not actually defined in RFC 9292 either. That topic will probably require an errata against RFC 9292.",
+      "createdAt": "2026-02-06T08:15:36Z",
+      "updatedAt": "2026-02-18T13:34:23Z",
+      "closedAt": "2026-02-18T13:34:23Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The last sentence [here](https://ietf-wg-ohai.github.io/draft-ohai-chunked-ohttp/draft-ietf-ohai-chunked-ohttp.html#section-1.1-5) should cover it.\n\nIf a spec doesn't explicitly restrict what can be used, you should assume that any option can be used.",
+          "createdAt": "2026-02-06T10:39:30Z",
+          "updatedAt": "2026-02-07T01:00:32Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That's fair, but multiple people missed this, so I'd recommend moving it from a casual mention in the Applicability section to actual normative text specifying that this MAY be done",
+          "createdAt": "2026-02-07T02:46:00Z",
+          "updatedAt": "2026-02-07T02:46:00Z"
         }
       ]
     }
@@ -2314,24 +2444,26 @@
       "id": "PR_kwDOJtaXUM6gT0nO",
       "title": "Fix naming of KEM encapsulated key",
       "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/47",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "rozbb",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Just a nit. The term for the thing the client sends is \"encapsulated key\" not \"encapsulated shared secret\" (in fact, the shared secret is not equal to the thing you get when you decapsulate, but rather a hash of it with some other stuff)",
       "createdAt": "2025-07-23T17:17:19Z",
-      "updatedAt": "2025-07-29T03:02:01Z",
+      "updatedAt": "2025-11-25T23:30:03Z",
       "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
       "baseRefName": "main",
       "baseRefOid": "b9e2ea2995e272e060c454afae0fdc13f2d06883",
       "headRepository": "rozbb/draft-ohai-chunked-ohttp",
       "headRefName": "patch-1",
       "headRefOid": "500ae98e738646dfc726505c8640c09eb83c630d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-11-25T23:30:03Z",
+      "mergedAt": "2025-11-25T23:30:03Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "a1c9811c1fabab341f20c327514cdae320248603"
+      },
       "comments": [
         {
           "author": "tfpauly",
@@ -2346,6 +2478,13 @@
           "body": "https://hpkewg.github.io/hpke/draft-ietf-hpke-hpke.html#section-5.1.1-3 uses \"encapsulated KEM shared secret\".  But I think that key is probably right, see https://github.com/hpkewg/hpke/issues/31",
           "createdAt": "2025-07-29T03:02:01Z",
           "updatedAt": "2025-07-29T03:02:01Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@martinthomson are you good to accept this change then?",
+          "createdAt": "2025-11-25T16:19:22Z",
+          "updatedAt": "2025-11-25T16:19:22Z"
         }
       ],
       "reviews": []
@@ -2389,6 +2528,834 @@
           "createdAt": "2025-09-22T01:50:18Z",
           "updatedAt": "2025-09-22T01:50:18Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "id": "PR_kwDOJtaXUM61GRrx",
+      "title": "Well-overdue SECDIR review edits",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/49",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-11-24T03:45:22Z",
+      "updatedAt": "2025-11-25T23:39:32Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "df766f39d6e72cbcf22235ff77155fbee1626bfa",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "secdir-review",
+      "headRefOid": "9683824e71a5125f2cdc92b87707328459e9f4bb",
+      "closedAt": "2025-11-25T23:39:32Z",
+      "mergedAt": "2025-11-25T23:39:32Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "d516f324caf233de41c427b45ea131bc863e348d"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7QshlI",
+          "commit": {
+            "abbreviatedOid": "21c3b8c"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-24T16:43:33Z",
+          "updatedAt": "2025-11-24T16:46:02Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\nThe final chunk in a request uses an AAD of the ASCII string \"final\" (0x66696e616c)\n```",
+              "createdAt": "2025-11-24T16:43:33Z",
+              "updatedAt": "2025-11-24T16:46:02Z"
+            },
+            {
+              "originalPosition": 27,
+              "body": "Would it be possible to include the limits here for the three currently-defined AEADs?",
+              "createdAt": "2025-11-24T16:45:51Z",
+              "updatedAt": "2025-11-24T16:46:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7QyLd7",
+          "commit": {
+            "abbreviatedOid": "21c3b8c"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T01:09:19Z",
+          "updatedAt": "2025-11-25T01:09:19Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "I considered it, but it's relatively easy to do the lookup if you need it.  Except...\r\n\r\nThe reason it's not a great idea is that these limits are larger than the limits advised below, so you probably shouldn't be using the hard limits at all.",
+              "createdAt": "2025-11-25T01:09:19Z",
+              "updatedAt": "2025-11-25T01:09:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7QyxYm",
+          "commit": {
+            "abbreviatedOid": "4d57f42"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T02:04:01Z",
+          "updatedAt": "2025-11-25T02:04:01Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "Hmmm, I had missed that. Maybe reordering these paragraphs would help go straight to that lower limit?\n\n```\nThe security margins for many ciphers degrade\nas more data is protected.\nThe total size of messages needs to be limited\nto limit the ability of an attacker to compromise cipher\nconfidentiality and integrity.\n\nThe use of most AEAD ciphers is subject to a per-ciphertext size limit.\nFor this format, this limit applies to each chunk\nand is determined by the `C_MAX` parameter of the AEAD;\nsee {{!AEAD=RFC5116}}.\n\nThe multi-user analysis in {{Section 6 of !AEAD-LIMITS=I-D.irtf-cfrg-aead-limits}}\ndescribes a process for estimating limits on usage\nthat maintain security margins.\nFor instance, that analysis shows that to keep the Authenticated Encryption Advantage (AEA)\nfor AEAD_AES_GCM_128 below 2<sup>-50</sup>,\nthe total number of bytes protected by a key can be kept below 2<sup>80</sup>,\ndivided by the total number of bytes protected by any key.\nTherefore, for a target advantage of 2<sup>-50</sup>,\nno message can exceed 2<sup>40</sup> bytes\nprotected with AEAD_AES_GCM_128.\n\nThere is also a limit on the total number of chunks,\nwhich is 256<sup>Nn</sup>.\nLimits on chunk size and count are hard limits\nthat apply to both request and response.\n```",
+              "createdAt": "2025-11-25T02:04:01Z",
+              "updatedAt": "2025-11-25T02:04:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7Qy5MM",
+          "commit": {
+            "abbreviatedOid": "21c3b8c"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T02:15:16Z",
+          "updatedAt": "2025-11-25T02:15:17Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "Good suggestion.  Thanks David.",
+              "createdAt": "2025-11-25T02:15:16Z",
+              "updatedAt": "2025-11-25T02:15:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7Q73Dy",
+          "commit": {
+            "abbreviatedOid": "9683824"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-11-25T14:30:25Z",
+          "updatedAt": "2025-11-25T14:30:26Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7Q_OGg",
+          "commit": {
+            "abbreviatedOid": "9683824"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-11-25T17:57:20Z",
+          "updatedAt": "2025-11-25T17:57:20Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "id": "PR_kwDOJtaXUM61GVu5",
+      "title": "Zero-length chunks are a DoS vector",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/50",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "They might be used for padding of a sort, but it's a crude tool.  The only real reason you might need a zero-length chunk is for the final chunk. Other instances are immediately suspect.",
+      "createdAt": "2025-11-24T03:57:52Z",
+      "updatedAt": "2026-01-22T21:08:31Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "df766f39d6e72cbcf22235ff77155fbee1626bfa",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "zero-length",
+      "headRefOid": "90a93aa861bb528e236fa5af45ff884a157a9c8e",
+      "closedAt": "2026-01-22T21:08:11Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This feels like an interop risk. Any chance we could just ban non-final zero-length chunks instead and require recipients to error?",
+          "createdAt": "2025-11-24T16:41:15Z",
+          "updatedAt": "2025-11-24T16:41:15Z"
+        },
+        {
+          "author": "corylanou",
+          "authorAssociation": "NONE",
+          "body": "> This feels like an interop risk. Any chance we could just ban non-final zero-length chunks instead and require recipients to error?\r\n\r\nI ran into this as a bug when I first implemented this in Go, and it was not fun to track down.  I actually added a check on our implementation to just do a \"no-op\" if I had a zero length encode request. But that just masks up stream that you asked to encode nothing... So I would agree this would be nice if it errors instead as part of the spec.",
+          "createdAt": "2025-11-24T17:40:23Z",
+          "updatedAt": "2025-11-24T17:40:23Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I had a bug also.  I'd be happy to ban zero-length chunks for all aside from the last if that is the view of the working group.  Though I should ask.",
+          "createdAt": "2025-11-25T01:10:47Z",
+          "updatedAt": "2025-11-25T01:10:47Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The implementation I have for sending chunks ignores a send operation that would generate a zero-length non-fina chunk, so I would be fine with prohibiting that case. ",
+          "createdAt": "2025-11-25T14:35:40Z",
+          "updatedAt": "2025-11-25T14:35:40Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing in favor of #53 ",
+          "createdAt": "2026-01-22T21:08:31Z",
+          "updatedAt": "2026-01-22T21:08:31Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7Q74HC",
+          "commit": {
+            "abbreviatedOid": "90a93aa"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-11-25T14:31:23Z",
+          "updatedAt": "2025-11-25T14:31:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "PR_kwDOJtaXUM61dNDy",
+      "title": "Recommend sending errors before running out of chunks",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/52",
+      "state": "CLOSED",
+      "author": "tfpauly",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Closes #51",
+      "createdAt": "2025-11-25T16:37:04Z",
+      "updatedAt": "2025-11-27T21:36:41Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "df766f39d6e72cbcf22235ff77155fbee1626bfa",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "tfpauly-patch-9",
+      "headRefOid": "db81fa2d9d9d43e7be440676049ba70d02dcf72f",
+      "closedAt": "2025-11-27T21:36:41Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7Q_Rz2",
+          "commit": {
+            "abbreviatedOid": "db81fa2"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-11-25T18:02:07Z",
+          "updatedAt": "2025-11-25T18:02:37Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "I find this framing harder to reason about than what you wrote in #52. How about something like:\n\n<<Note that once one of the limits is hit, the sender loses the ability to send application data to the peer. If the sender wishes to securely inform its peer of this error condition (for example by using HTTP trailer fields), it needs to trigger this before reaching the limit.>>",
+              "createdAt": "2025-11-25T18:02:07Z",
+              "updatedAt": "2025-11-25T18:02:37Z"
+            },
+            {
+              "originalPosition": 7,
+              "body": "The property we want is \"before the limit\" not \"put it in the very last chunk\"",
+              "createdAt": "2025-11-25T18:02:26Z",
+              "updatedAt": "2025-11-25T18:02:37Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 53,
+      "id": "PR_kwDOJtaXUM61hIud",
+      "title": "Disallow zero-length chunks outright",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/53",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes #50.",
+      "createdAt": "2025-11-25T23:36:50Z",
+      "updatedAt": "2026-01-22T21:08:10Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "a1c9811c1fabab341f20c327514cdae320248603",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "no-zero",
+      "headRefOid": "5d6caa65f667e3f4751c7580b2e57475c7e39d69",
+      "closedAt": "2026-01-22T21:08:09Z",
+      "mergedAt": "2026-01-22T21:08:09Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "9b100fa12761ff29a87683e29dd29116520d1163"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7RDoJZ",
+          "commit": {
+            "abbreviatedOid": "5d6caa6"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-11-25T23:39:55Z",
+          "updatedAt": "2025-11-25T23:39:55Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7RFOb7",
+          "commit": {
+            "abbreviatedOid": "5d6caa6"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-11-26T01:27:55Z",
+          "updatedAt": "2025-11-26T01:27:55Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7TWWAr",
+          "commit": {
+            "abbreviatedOid": "5d6caa6"
+          },
+          "author": "MikeBishop",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-12-05T18:13:26Z",
+          "updatedAt": "2025-12-05T18:13:26Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 56,
+      "id": "PR_kwDOJtaXUM7BDNx0",
+      "title": "Incremental header and why not to set it",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/56",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This adds \"some of\" to the first paragraph and does a bit of rewording.\r\n\r\nAnd explains why you might choose not to add Incremental: ?1\r\n\r\nCloses #55.",
+      "createdAt": "2026-02-03T01:58:55Z",
+      "updatedAt": "2026-02-17T21:45:37Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "9b100fa12761ff29a87683e29dd29116520d1163",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "should-incr",
+      "headRefOid": "34af4a486a082db83ad31cf688ec65037632e329",
+      "closedAt": "2026-02-17T21:45:37Z",
+      "mergedAt": "2026-02-17T21:45:37Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "575b6eec9fa29160e8760dd299c1e8ddb7ea5a28"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7jepdW",
+          "commit": {
+            "abbreviatedOid": "34af4a4"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-17T21:45:31Z",
+          "updatedAt": "2026-02-17T21:45:31Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 58,
+      "id": "PR_kwDOJtaXUM7CWCEN",
+      "title": "We never really said this before",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/58",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "RFC 9458 says that the content of the message is Binary HTTP; this never did.\r\n\r\nCloses #57",
+      "createdAt": "2026-02-08T22:27:37Z",
+      "updatedAt": "2026-02-18T13:34:22Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "c113c429b15d4af4c1185642c3dc924120dcf33c",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "bhttp-must",
+      "headRefOid": "74dfe780ff816accc9147964dddf0c1ed1f423f4",
+      "closedAt": "2026-02-18T13:34:22Z",
+      "mergedAt": "2026-02-18T13:34:22Z",
+      "mergedBy": "tfpauly",
+      "mergeCommit": {
+        "oid": "5abd05c4d0fd4d01de53cf4c7e3c4d8c2173c979"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7gyzHM",
+          "commit": {
+            "abbreviatedOid": "95d1d17"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-09T06:24:23Z",
+          "updatedAt": "2026-02-09T06:24:40Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "```suggestion\nresponses MUST contain Binary HTTP responses, also in either form; see {{!BHTTP}}.\n```",
+              "createdAt": "2026-02-09T06:24:23Z",
+              "updatedAt": "2026-02-09T06:24:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7gzMdN",
+          "commit": {
+            "abbreviatedOid": "95d1d17"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-09T06:59:54Z",
+          "updatedAt": "2026-02-09T06:59:54Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "No need to repeat it, I think.",
+              "createdAt": "2026-02-09T06:59:54Z",
+              "updatedAt": "2026-02-09T06:59:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7hBInx",
+          "commit": {
+            "abbreviatedOid": "95d1d17"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-09T20:30:20Z",
+          "updatedAt": "2026-02-09T20:30:20Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I tend to err on the side of stating the obvious, but I don't feel strongly",
+              "createdAt": "2026-02-09T20:30:20Z",
+              "updatedAt": "2026-02-09T20:30:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7jeRpf",
+          "commit": {
+            "abbreviatedOid": "95d1d17"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-17T21:19:28Z",
+          "updatedAt": "2026-02-17T21:19:28Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I prefer brevity in this case.",
+              "createdAt": "2026-02-17T21:19:28Z",
+              "updatedAt": "2026-02-17T21:19:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7jemdK",
+          "commit": {
+            "abbreviatedOid": "95d1d17"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2026-02-17T21:41:57Z",
+          "updatedAt": "2026-02-17T21:44:30Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\nChunked Oblivious HTTP requests are defined to contain Binary HTTP requests\n```\n\nI'm concerned that this text sounds like it is precluding using other media types, which is something that I believe needs to still be supported -- my implementation has tests to validate functionality for alternate media types. https://www.rfc-editor.org/rfc/rfc9458#section-4.6",
+              "createdAt": "2026-02-17T21:41:57Z",
+              "updatedAt": "2026-02-17T21:44:30Z"
+            },
+            {
+              "originalPosition": 6,
+              "body": "```suggestion\nresponses contain Binary HTTP responses; see {{!BHTTP}}. As with non-chunked Oblivious HTTP, the encapsulation format\nof chunked Oblivious HTTP can be repurposed for other media types. See {{Section 4.6 of OHTTP}}.\n```\n",
+              "createdAt": "2026-02-17T21:42:17Z",
+              "updatedAt": "2026-02-17T21:44:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7jfV0A",
+          "commit": {
+            "abbreviatedOid": "402f1ab"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-17T22:35:40Z",
+          "updatedAt": "2026-02-17T22:35:40Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "```suggestion\nof chunked Oblivious HTTP can be repurposed for other media types;\nsee {{Section 4.6 of OHTTP}}.\n```",
+              "createdAt": "2026-02-17T22:35:40Z",
+              "updatedAt": "2026-02-17T22:35:40Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7jfWd_",
+          "commit": {
+            "abbreviatedOid": "e51c5ba"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-17T22:36:16Z",
+          "updatedAt": "2026-02-17T22:36:17Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\nresponses contain Binary HTTP responses; see {{!BHTTP}}.\nAs with non-chunked Oblivious HTTP, \nthe encapsulation format of chunked Oblivious HTTP can be repurposed\nfor other media types; see {{Section 4.6 of OHTTP}}.\n```",
+              "createdAt": "2026-02-17T22:36:16Z",
+              "updatedAt": "2026-02-17T22:36:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7jfnbG",
+          "commit": {
+            "abbreviatedOid": "0460159"
+          },
+          "author": "github-actions",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-17T22:55:07Z",
+          "updatedAt": "2026-02-17T22:55:08Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "````suggestion\nAs with non-chunked Oblivious HTTP,\n````",
+              "createdAt": "2026-02-17T22:55:07Z",
+              "updatedAt": "2026-02-17T22:55:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7jr6SN",
+          "commit": {
+            "abbreviatedOid": "74dfe78"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-18T13:33:24Z",
+          "updatedAt": "2026-02-18T13:33:24Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 59,
+      "id": "PR_kwDOJtaXUM7CWYpq",
+      "title": "Derrell delivers again",
+      "url": "https://github.com/ietf-wg-ohai/draft-ohai-chunked-ohttp/pull/59",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This was once again excellent feedback.  There are modest editorial improvements here, but the insistence that I explain the limits analysis was what caused me to find the error introduced during AD review (and expand on the explanation).",
+      "createdAt": "2026-02-08T23:39:45Z",
+      "updatedAt": "2026-02-17T22:34:17Z",
+      "baseRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "baseRefName": "main",
+      "baseRefOid": "9b100fa12761ff29a87683e29dd29116520d1163",
+      "headRepository": "ietf-wg-ohai/draft-ohai-chunked-ohttp",
+      "headRefName": "piperv2",
+      "headRefOid": "44cf7c131a92612291242a41cc815c8b22662bca",
+      "closedAt": "2026-02-17T22:34:17Z",
+      "mergedAt": "2026-02-17T22:34:17Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "147e7baca903b2adcab191796f3824f652733850"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJtaXUM7gvvju",
+          "commit": {
+            "abbreviatedOid": "23d2063"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Just some notes on what I changed.",
+          "createdAt": "2026-02-08T23:40:02Z",
+          "updatedAt": "2026-02-08T23:46:22Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Just moved this out to keep paragraphs small.",
+              "createdAt": "2026-02-08T23:40:03Z",
+              "updatedAt": "2026-02-08T23:46:22Z"
+            },
+            {
+              "originalPosition": 16,
+              "body": "New note here about the new risks being added to the existing ones.",
+              "createdAt": "2026-02-08T23:40:22Z",
+              "updatedAt": "2026-02-08T23:46:22Z"
+            },
+            {
+              "originalPosition": 31,
+              "body": "\"Need to be aware\" -> don't or be sure you don't need that privacy (which is sometimes the case).",
+              "createdAt": "2026-02-08T23:41:36Z",
+              "updatedAt": "2026-02-08T23:46:22Z"
+            },
+            {
+              "originalPosition": 40,
+              "body": "Sections moving is a pain.",
+              "createdAt": "2026-02-08T23:41:47Z",
+              "updatedAt": "2026-02-08T23:46:22Z"
+            },
+            {
+              "originalPosition": 52,
+              "body": "This reverts part of #48 with a different wording.",
+              "createdAt": "2026-02-08T23:42:27Z",
+              "updatedAt": "2026-02-08T23:46:22Z"
+            },
+            {
+              "originalPosition": 59,
+              "body": "The basic analysis here is captured on the mailing list.  But it comes down to the `/ (L * B)` component.  The limits above are based on `L == B`, which is the most pessimistic use of this format.  If you cut chunks down in size, then you can drive the overall size the message up OR you can have more messages.\n\nTo be clear, no one should use massive chunks, so this is almost academic.  But if they do, 1 million messages is not a lot, so you probably want to start increasing that number before you look to increase the total message size.  Or maybe consider a less aggressive target security margin (2^-40 gets you to a billion messages).",
+              "createdAt": "2026-02-08T23:46:12Z",
+              "updatedAt": "2026-02-08T23:46:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7gy3Mk",
+          "commit": {
+            "abbreviatedOid": "23d2063"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-09T06:27:47Z",
+          "updatedAt": "2026-02-09T06:34:28Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "As an implementer, I'm not sure what code I'm supposed to write or not write when I read \"Interactivity SHOULD be avoided\". What's the intent of this sentence? To reduce the applicability of chunked OHTTP? Or to influence application developers? This feels like an 6919 OUGHT TO...",
+              "createdAt": "2026-02-09T06:27:47Z",
+              "updatedAt": "2026-02-09T06:34:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7gzM1I",
+          "commit": {
+            "abbreviatedOid": "23d2063"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-09T07:00:23Z",
+          "updatedAt": "2026-02-09T07:00:23Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "```suggestion\r\nInteractivity is best avoided.\r\n```\r\n??",
+              "createdAt": "2026-02-09T07:00:23Z",
+              "updatedAt": "2026-02-09T07:00:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7hBJzZ",
+          "commit": {
+            "abbreviatedOid": "23d2063"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-09T20:31:14Z",
+          "updatedAt": "2026-02-09T20:31:14Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "I guess I'm not sure what the goal of this sentence is. Who should be changing their behavior upon reading it?",
+              "createdAt": "2026-02-09T20:31:14Z",
+              "updatedAt": "2026-02-09T20:31:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7hE5ae",
+          "commit": {
+            "abbreviatedOid": "23d2063"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-10T00:43:10Z",
+          "updatedAt": "2026-02-10T00:43:10Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "Anyone who is considering OHTTP for interactivity.  Most, if not all, of those people should be using TLS instead.",
+              "createdAt": "2026-02-10T00:43:10Z",
+              "updatedAt": "2026-02-10T00:43:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7hE6Su",
+          "commit": {
+            "abbreviatedOid": "23d2063"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-10T00:44:10Z",
+          "updatedAt": "2026-02-10T00:44:10Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "```suggestion\r\nInteractivity is best avoided.\r\nTLS {{?TLS=RFC8446}} is capable of providing interactivity\r\nwithout many of the shortcomings of Oblivious HTTP.\r\n```",
+              "createdAt": "2026-02-10T00:44:10Z",
+              "updatedAt": "2026-02-10T00:44:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7hF-se",
+          "commit": {
+            "abbreviatedOid": "23d2063"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-10T02:46:49Z",
+          "updatedAt": "2026-02-10T02:46:49Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "```suggestion\r\nApplications that require interactivity SHOULD avoid using chunked OHTTP\r\nand instead leverage protocols without the shortcomings of Oblivious HTTP.\r\nOne example is combining TLS {{?TLS=RFC8446}} and the HTTP CONNECT\r\nmethod {{Section 9.3.6 of ?RFC9110}}.\r\n```",
+              "createdAt": "2026-02-10T02:46:49Z",
+              "updatedAt": "2026-02-10T02:46:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7hGWPf",
+          "commit": {
+            "abbreviatedOid": "b56c960"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-02-10T03:30:17Z",
+          "updatedAt": "2026-02-10T03:30:17Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJtaXUM7jesYX",
+          "commit": {
+            "abbreviatedOid": "b56c960"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-02-17T21:48:38Z",
+          "updatedAt": "2026-02-17T21:49:43Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "```suggestion\na documented analysis should be performed\n```\nNot a compete sentence otherwise?",
+              "createdAt": "2026-02-17T21:48:38Z",
+              "updatedAt": "2026-02-17T21:49:44Z"
+            },
+            {
+              "originalPosition": 40,
+              "body": "Indeed!!",
+              "createdAt": "2026-02-17T21:48:47Z",
+              "updatedAt": "2026-02-17T21:49:44Z"
+            }
+          ]
         }
       ]
     }
